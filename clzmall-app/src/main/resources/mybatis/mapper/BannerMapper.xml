@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.app.mapper.BannerMapper">
+
+
+    <sql id="columns">
+        id,
+        background_img_url,
+        jump_url,
+        title,
+        sort_no,
+        status,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.Banner">
+        <result property="id" column="id"/>
+        <result property="backgroundImgUrl" column="background_img_url"/>
+        <result property="jumpUrl" column="jump_url"/>
+        <result property="title" column="title"/>
+        <result property="sortNo" column="sort_no"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from banner a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from banner a where status = 1
+    </select>
+
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.Banner">
+        UPDATE banner a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.goodsId != null"> a.goods_id = #{vo.goodsId},</if>
+            <if test="vo.picUrl != null"> a.pic_url = #{vo.picUrl},</if>
+            <if test="vo.isDefault != null"> a.is_default = #{vo.isDefault},</if>
+            <if test="vo.status != null"> a.status = #{vo.status},</if>
+            <if test="vo.updateTime != null"> a.update_time = now()</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

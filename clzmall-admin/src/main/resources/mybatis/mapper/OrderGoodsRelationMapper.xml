@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.admin.mapper.OrderGoodsRelationMapper">
+
+
+    <sql id="columns">
+        id,
+        order_id,
+        goods_id,
+        number,
+        goods_properties,
+        label,
+        logisticsType,
+        inviter_id,
+        status,
+        create_time,
+        update_time
+    </sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.OrderGoodsRelation">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="number" column="number"/>
+        <result property="goodsProperties" column="goods_properties"/>
+        <result property="label" column="label"/>
+        <result property="logisticsType" column="logisticsType"/>
+        <result property="inviterId" column="inviter_id"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap_order" type="com.clzmall.app.entity.dto.GoodsDto">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="storeAmount" column="store_amount"/>
+        <result property="minPrice" column="min_price"/>
+        <result property="originalPrice" column="original_price"/>
+        <result property="brand" column="brand"/>
+        <result property="marketTime" column="market_time"/>
+        <result property="shareBonus" column="share_bonus"/>
+        <result property="shareBonusType" column="share_bonus_type"/>
+        <result property="buyCount" column="buy_count"/>
+        <result property="goodCommentCount" column="good_comment_count"/>
+        <result property="goodsDesc" column="goods_desc"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+
+        <result property="number" column="number"/>
+        <result property="orderId" column="order_id"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="label" column="label"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from order_goods_relation a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectGoodsByOrderIds" resultMap="beanMap_order">
+        SELECT
+            r.order_id, r.number,r.label,
+            g.*,
+            p.pic_url
+        FROM
+            order_goods_relation r join
+            goods g on r.goods_id = g.id join goods_pics p on r.goods_id = p.goods_id
+        WHERE
+            p.is_default = 1
+        <if test="idsList.size > 0">
+            AND r.order_id IN
+            <foreach collection="idsList" item="id" index="index"
+                     open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="vo.id" parameterType="com.clzmall.common.model.OrderGoodsRelation">
+        insert into order_goods_relation
+        ( <include refid="columns"/> )
+        values
+        (#{vo.id},#{vo.orderId},#{vo.goodsId}, #{vo.number}, #{vo.goodsProperties}, #{vo.label}, #{vo.logisticsType},#{vo.inviterId},
+        #{vo.status} , now(), now());
+    </insert>
+
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.OrderGoodsRelation">
+        UPDATE order_goods_relation a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.orderId != null"> a.order_id = #{vo.orderId},</if>
+            <if test="vo.goodsId != null"> a.goods_id = #{vo.goodsId},</if>
+            <if test="vo.number != null"> a.number = #{vo.number},</if>
+            <if test="vo.goodsProperties != null"> a.goods_properties = #{vo.goodsProperties},</if>
+            <if test="vo.logisticsType != null"> a.logisticsType = #{vo.logisticsType},</if>
+            <if test="vo.inviterId != null"> a.inviter_id = #{vo.inviterId},</if>
+            <if test="vo.status != null"> a.status = #{vo.status},</if>
+            <if test="vo.updateTime != null"> a.update_time = now()</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

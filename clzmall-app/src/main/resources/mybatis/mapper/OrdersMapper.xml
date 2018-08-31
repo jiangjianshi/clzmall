@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.app.mapper.OrdersMapper">
+
+
+    <sql id="columns">
+		id,
+		order_code,
+        uid,
+        address_id,
+        real_amount,
+        use_score,
+        gain_score,
+        remark,
+        status,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.Orders">
+        <result property="id" column="id"/>
+        <result property="orderCode" column="order_code"/>
+        <result property="uid" column="uid"/>
+        <result property="addressId" column="address_id"/>
+        <result property="realAmount" column="real_amount"/>
+        <result property="useScore" column="use_score"/>
+        <result property="gainScore" column="gain_score"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from orders a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectByUidAndStatus" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from orders a
+        where a.uid = #{uid}
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+
+    </select>
+
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="vo.id" parameterType="com.clzmall.common.model.Orders">
+        insert into orders
+           ( <include refid="columns"/> )
+        values
+            (#{vo.id},#{vo.orderCode},#{vo.uid}, #{vo.addressId}, #{vo.realAmount},#{vo.useScore},#{vo.gainScore},
+            #{vo.remark},#{vo.status} , now(), now());
+    </insert>
+
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.Orders">
+        UPDATE orders a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.orderCode != null"> a.order_dode = #{vo.orderCode},</if>
+            <if test="vo.uid != null"> a.uid = #{vo.uid},</if>
+            <if test="vo.addressId != null"> a.address_id = #{vo.addressId},</if>
+            <if test="vo.realAmount != null"> a.real_amount = #{vo.realAmount},</if>
+            <if test="vo.useScore != null"> a.use_score = #{vo.useScore},</if>
+            <if test="vo.gainScore != null"> a.gain_score = #{vo.gainScore},</if>
+            <if test="vo.remark != null"> a.remark = #{vo.remark},</if>
+            <if test="vo.status != null"> a.status = #{vo.status},</if>
+            <if test="vo.updateTime != null"> a.update_time = now()</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

@@ -1,0 +1,61 @@
+<#include "../common/include.html"/>
+<title>房间图片审核列表</title>
+<script type="text/javascript" src="${basePath}/stat/category/goodsCategory.js"></script>
+<script type="text/javascript" src="${basePath}/IncJs.a?c=is_valid&c=role_type"></script>
+</head>
+<body class="easyui-layout" data-options="fit:true,border:false">
+	<div id="toolbar" style="display: none;">
+		<form id="searchForm">
+			<table border="0">
+				<tr>
+					<td colspan="2" style="padding-left:5px;"><a id="btn"
+						href="javascript:opt.add();" class="easyui-linkbutton" plain="true"
+						data-options="iconCls:'icon-add'">新增</a>
+						<a id="btn"
+						href="javascript:opt.del();" class="easyui-linkbutton" plain="true"
+						data-options="iconCls:'icon-remove'" >停用</a>
+					</td>
+					<td>
+						<div>
+							<div class="datagrid-btn-separator"></div>
+						</div>
+					</td>
+					<td>类别名称:</td>
+					<td>
+						<input name="account" id="accountSelect" class="easyui-textbox" style="width: 110px;" />
+					</td>
+					<td colspan="2" style="padding-left:5px;"><a id="btn"
+						href="javascript:opt.search();" class="easyui-linkbutton"
+						data-options="iconCls:'icon-search'">查询</a>
+						<a id="btn"
+						href="javascript:opt.resetSearch();" class="easyui-linkbutton"
+						data-options="iconCls:'icon-redo'" style="margin-left:10px;">重置</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div data-options="region:'center',fit:true,border:false">
+		<table id="dataGrid" data-options="fit:true, border:false"></table>
+	</div>
+	
+	<div id="addCategory" class="easyui-dialog" style="width:450px; height:200px;" closed="true" buttons="#dlg-buttons">
+    	<form id="addForm">
+    	<center>
+    		<div style="margin-bottom:10px;margin-top:20px">
+                <input name="id" type="hidden">
+                <input id="catCode" name="catCode" class="easyui-textbox" label="类别编号:"  required="true" style="width:80%">
+            </div>
+			<div style="margin-bottom:10px;margin-top:20px">
+				<input id="catName" name="catName" class="easyui-textbox" label="类别名称:"  required="true" style="width:80%">
+			</div>
+    	</center>
+		</form>
+	</div>
+	<!-- 按钮 -->
+	<div id="dlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="opt.saveCategory()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#addCategory').dialog('close')" style="width:90px">关闭</a>
+    </div>
+</body>
+</html>

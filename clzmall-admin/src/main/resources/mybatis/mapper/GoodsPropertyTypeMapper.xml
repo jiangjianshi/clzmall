@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.admin.mapper.GoodsPropertyTypeMapper">
+
+
+    <sql id="columns">
+        id,
+        name,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.GoodsPropertyType">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from goods_property_type a
+        where a.id = #{id}
+    </select>
+
+
+</mapper>

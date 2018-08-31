@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.admin.mapper.GoodsCategoryMapper">
+
+
+    <sql id="columns">
+		id,
+        cat_code,
+        cat_name,
+        cat_desc,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.GoodsCategory">
+        <result property="id" column="id"/>
+        <result property="catCode" column="cat_code"/>
+        <result property="catName" column="cat_name"/>
+        <result property="catDesc" column="cat_desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from goods_category a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from goods_category a
+    </select>
+
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.GoodsCategory">
+        UPDATE goods_category a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.catCode != null"> a.cat_code = #{vo.catCode},</if>
+            <if test="vo.catName != null"> a.cat_name = #{vo.catName},</if>
+            <if test="vo.catDesc != null"> a.cat_desc = #{vo.catDesc},</if>
+            <if test="vo.updateTime != null"> a.update_time = now()</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

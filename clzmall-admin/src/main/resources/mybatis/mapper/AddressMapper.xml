@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.admin.mapper.AddressMapper">
+
+
+    <sql id="columns">
+		id,
+        uid,
+        province_id,
+        city_id,
+        district_id,
+        link_man,
+        address,
+        mobile,
+        code,
+        is_default,
+        status,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.Address">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="provinceId" column="province_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="districtId" column="district_id"/>
+        <result property="linkMan" column="link_man"/>
+        <result property="address" column="address"/>
+        <result property="mobile" column="mobile"/>
+        <result property="code" column="code"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from address a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectByUid" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from address a
+        where a.uid = #{uid} and a.status = 1
+    </select>
+
+    <select id="selectDefaultAddress" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from address a
+        where a.uid = #{uid} and a.status = 1 and a.is_default = 1 order by a.create_time desc limit 1
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="vo.id" parameterType="com.clzmall.common.model.Address">
+        insert into address
+           ( uid,
+            province_id,
+            city_id,
+            district_id,
+            link_man,
+            address,
+            mobile,
+            code,
+            is_default,
+            status,
+            create_time,
+            update_time)
+        values
+            (#{vo.uid},#{vo.provinceId},#{vo.cityId},#{vo.districtId},#{vo.linkMan},
+            #{vo.address},#{vo.mobile} ,#{vo.code},#{vo.isDefault},#{vo.status}, now(), now());
+    </insert>
+
+    <update id="updateDefaultByUid">
+        UPDATE address a set a.is_default = #{isDefault} where a.uid = #{uid}
+    </update>
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.Address">
+        UPDATE address a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.uid != null"> a.uid = #{vo.uid},</if>
+            <if test="vo.provinceId != null"> a.province_id = #{vo.provinceId},</if>
+            <if test="vo.cityId != null"> a.city_id = #{vo.cityId},</if>
+            <if test="vo.districtId != null"> a.district_id = #{vo.districtId},</if>
+            <if test="vo.linkMan != null"> a.link_man = #{vo.linkMan},</if>
+            <if test="vo.address != null"> a.address = #{vo.address},</if>
+            <if test="vo.mobile != null"> a.mobile = #{vo.mobile},</if>
+            <if test="vo.code != null"> a.code = #{vo.code},</if>
+            <if test="vo.isDefault != null"> a.is_default = #{vo.isDefault},</if>
+            <if test="vo.status != null"> a.status = #{vo.status},</if>
+            <if test="vo.updateTime != null"> a.update_time = now()</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

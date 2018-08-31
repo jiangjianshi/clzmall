@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.app.mapper.GoodsPropertyMapper">
+
+
+    <sql id="columns">
+        id,
+        goods_id,
+        prop_type_id,
+        prop_value,
+        added_price,
+        added_amount,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.GoodsProperty">
+        <result property="id" column="id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="propTypeId" column="prop_type_id"/>
+        <result property="propValue" column="prop_value"/>
+        <result property="addedPrice" column="added_price"/>
+        <result property="addedAmount" column="added_amount"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from goods_properties a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectByGoodsId" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from goods_properties a where 1=1 and goods_id = #{goodsId}
+    </select>
+
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.GoodsProperty">
+        UPDATE goods_properties a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.goodsId != null"> a.goods_id = #{vo.goodsId},</if>
+            <if test="vo.propTypeId != null"> a.prop_type_id = #{vo.propTypeId},</if>
+            <if test="vo.propValue != null"> a.prop_value = #{vo.propValue},</if>
+            <if test="vo.addedPrice != null"> a.added_price = #{vo.addedPrice},</if>
+            <if test="vo.addedAmount != null"> a.added_amount = #{vo.addedAmount},</if>
+            <if test="vo.updateTime != null"> a.update_time = now()</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

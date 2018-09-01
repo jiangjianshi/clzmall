@@ -23,7 +23,7 @@ public class CodeGenTest {
             Connection conn = DriverManager.getConnection(url, user, password);
             if (!conn.isClosed()) {
                 Statement statement = conn.createStatement();
-                String sql = "select COLUMN_NAME,COLUMN_COMMENT ,DATA_TYPE from information_schema.COLUMNS where table_name = 'order_goods_relation'";
+                String sql = "select COLUMN_NAME,COLUMN_COMMENT ,DATA_TYPE from information_schema.COLUMNS where table_name = 'template_msg'";
                 ResultSet rs = statement.executeQuery(sql);
                 while (rs.next()) {
                     String columnComment = rs.getString("COLUMN_COMMENT");

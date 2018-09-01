@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clzmall.app.mapper.TemplateMsgMapper">
+
+
+    <sql id="columns">
+        id,
+        uid,
+        type,
+        module,
+        business_id,
+        trigger,
+        template_id,
+        form_id,
+        url,
+        postJsonString,
+        create_time,
+        update_time
+	</sql>
+
+    <!--查询结果集 -->
+    <resultMap id="beanMap" type="com.clzmall.common.model.TemplateMsg">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="type" column="type"/>
+        <result property="module" column="module"/>
+        <result property="businessId" column="business_id"/>
+        <result property="trigger" column="trigger"/>
+        <result property="templateId" column="template_id"/>
+        <result property="formId" column="form_id"/>
+        <result property="url" column="url"/>
+        <result property="postJsonString" column="postJsonString"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from banner a
+        where a.id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="beanMap">
+        select
+        <include refid="columns"/>
+        from banner a where status = 1
+    </select>
+
+
+    <!-- 选择更新 -->
+    <update id="updateSelective" parameterType="com.clzmall.common.model.TemplateMsg">
+        UPDATE banner a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vo.uid != null"> a.uid = #{vo.uid},</if>
+            <if test="vo.type != null"> a.type = #{vo.type},</if>
+            <if test="vo.module != null"> a.module = #{vo.module},</if>
+            <if test="vo.businessId != null"> a.business_id = #{vo.businessId},</if>
+            <if test="vo.trigger != null"> a.trigger = #{vo.trigger},</if>
+            <if test="vo.templateId != null"> a.template_id = #{vo.templateId},</if>
+            <if test="vo.formId != null"> a.form_id = #{vo.formId},</if>
+            <if test="vo.url != null"> a.url = #{vo.url},</if>
+            <if test="vo.postJsonString != null"> a.postJsonString = #{vo.postJsonString},</if>
+            <if test="vo.updateTime != null"> a.update_time = #{vo.updateTime},</if>
+        </trim>
+        WHERE a.id = #{vo.id}
+    </update>
+
+</mapper>

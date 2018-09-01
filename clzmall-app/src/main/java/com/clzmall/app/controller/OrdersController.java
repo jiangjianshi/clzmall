@@ -9,6 +9,7 @@ import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
 import com.clzmall.common.common.RespMsg;
 import com.clzmall.common.model.Orders;
+import com.clzmall.common.model.TemplateMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -104,4 +105,17 @@ public class OrdersController extends BaseController {
             return fail("获取失败");
         }
     }
+
+    @RequestMapping("putTemplateMsg")
+    public RespMsg<Integer> putTemplateMsg(TemplateMsg msg) {
+
+        try {
+            int count = ordersService.putTemplateMsg(msg);
+            return success("获取成功", count);
+        } catch (Exception e) {
+            log.error("获取失败", e);
+            return fail("获取失败");
+        }
+    }
+
 }

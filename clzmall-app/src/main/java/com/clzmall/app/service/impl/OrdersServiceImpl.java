@@ -11,6 +11,7 @@ import com.clzmall.app.service.OrdersService;
 import com.clzmall.common.enums.OrderTypeEnum;
 import com.clzmall.common.model.OrderGoodsRelation;
 import com.clzmall.common.model.Orders;
+import com.clzmall.common.model.TemplateMsg;
 import com.clzmall.common.util.DateUtil;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -146,9 +144,17 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public PayVo getPayData(PayParam payParam) {
+        PayVo paydata = new PayVo();
+        paydata.setNonceStr(UUID.randomUUID().toString().replace("-", ""));
+        paydata.setTimeStamp(String.valueOf(new Date().getTime()));
+        paydata.setPrepayId(UUID.randomUUID().toString().replace("-", ""));
+        paydata.setSign(UUID.randomUUID().toString().replace("-", ""));
+        return paydata;
 
-
-        return new PayVo();
     }
 
+    @Override
+    public int putTemplateMsg(TemplateMsg msg) {
+        return 0;
+    }
 }

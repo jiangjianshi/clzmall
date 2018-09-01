@@ -7,6 +7,7 @@ import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
 import com.clzmall.app.entity.vo.PayVo;
 import com.clzmall.common.model.Orders;
+import com.clzmall.common.model.TemplateMsg;
 
 /**
  * Created by jiangjianshi on 18/8/5.
@@ -29,4 +30,6 @@ public interface OrdersService {
     int confirmOrder(Integer orderId);
 
     PayVo getPayData(PayParam payParam);
+
+    int putTemplateMsg(TemplateMsg msg);
 }

@@ -5,8 +5,10 @@
 
     <sql id="columns">
         id,
+        shop_id,
         background_img_url,
         jump_url,
+        goods_id,
         title,
         sort_no,
         status,
@@ -17,8 +19,10 @@
     <!--查询结果集 -->
     <resultMap id="beanMap" type="com.clzmall.common.model.Banner">
         <result property="id" column="id"/>
+        <result property="shopId" column="shop_id"/>
         <result property="backgroundImgUrl" column="background_img_url"/>
         <result property="jumpUrl" column="jump_url"/>
+        <result property="goodsId" column="goods_id"/>
         <result property="title" column="title"/>
         <result property="sortNo" column="sort_no"/>
         <result property="status" column="status"/>
@@ -34,10 +38,14 @@
         where a.id = #{id}
     </select>
 
-    <select id="selectAll" resultMap="beanMap">
+    <select id="selectByShopId" resultMap="beanMap">
         select
         <include refid="columns"/>
-        from banner a where status = 1
+        from banner a
+        where 1=1 and status != -1 and a.shop_id = #{shopId}
+        <if test="title != null">
+            and a.title = #{title}
+        </if>
     </select>
 
 

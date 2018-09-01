@@ -1,6 +1,7 @@
 <#include "../common/include.html"/>
-<title>分类管理</title>
-<script type="text/javascript" src="${basePath}/stat/category/goodsCategory.js"></script>
+<title>banner管理</title>
+<script type="text/javascript" src="${basePath}/stat/banner/banner.js"></script>
+<script type="text/javascript" src="${basePath}/IncJs.a?c=is_valid&c=role_type"></script>
 </head>
 <body class="easyui-layout" data-options="fit:true,border:false">
 	<div id="toolbar" style="display: none;">
@@ -16,9 +17,9 @@
 							<div class="datagrid-btn-separator"></div>
 						</div>
 					</td>
-					<td>类别名称:</td>
+					<td>标题:</td>
 					<td>
-						<input name="catName" id="catName" class="easyui-textbox" style="width: 110px;" />
+						<input name="title" id="title" class="easyui-textbox" style="width: 110px;" />
 					</td>
 					<td colspan="2" style="padding-left:5px;"><a id="btn"
 						href="javascript:opt.search();" class="easyui-linkbutton"
@@ -35,7 +36,7 @@
 		<table id="dataGrid" data-options="fit:true, border:false"></table>
 	</div>
 	
-	<div id="addCategory" class="easyui-dialog" style="width:450px; height:240px;" closed="true" buttons="#dlg-buttons">
+	<div id="addWin" class="easyui-dialog" style="width:450px; height:240px;" closed="true" buttons="#dlg-buttons">
     	<form id="addForm">
 			<center>
 				<div style="margin-bottom:10px;margin-top:20px">
@@ -53,8 +54,8 @@
 	</div>
 	<!-- 按钮 -->
 	<div id="dlg-buttons">
-        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="opt.saveCategory()" style="width:90px">保存</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#addCategory').dialog('close')" style="width:90px">关闭</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="opt.save()" style="width:90px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#addWin').dialog('close')" style="width:90px">关闭</a>
     </div>
 </body>
 </html>

@@ -139,7 +139,7 @@ opt = {
     			},
     			dataType : 'json',
     			success : function(result) {
-    				if(result.status == 0){
+    				if(result.code == 0){
     					showMessage("处理结果", result.msg, 1000);
     					grid.datagrid('reload');
     				}else{
@@ -168,7 +168,7 @@ opt = {
             },
             success: function(result){
                 var result = eval('('+result+')');
-                if (result.status == 0){
+                if (result.code == 0){
                 	showMessage("处理结果", result.msg, 1000);
                 	 $('#addUser').dialog('close');// close the dialog
                      grid.datagrid('reload');    // reload the user data

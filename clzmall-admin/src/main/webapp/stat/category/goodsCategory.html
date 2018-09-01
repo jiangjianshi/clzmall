@@ -11,9 +11,6 @@
 					<td colspan="2" style="padding-left:5px;"><a id="btn"
 						href="javascript:opt.add();" class="easyui-linkbutton" plain="true"
 						data-options="iconCls:'icon-add'">新增</a>
-						<a id="btn"
-						href="javascript:opt.del();" class="easyui-linkbutton" plain="true"
-						data-options="iconCls:'icon-remove'" >停用</a>
 					</td>
 					<td>
 						<div>
@@ -22,7 +19,7 @@
 					</td>
 					<td>类别名称:</td>
 					<td>
-						<input name="account" id="accountSelect" class="easyui-textbox" style="width: 110px;" />
+						<input name="catName" id="catName" class="easyui-textbox" style="width: 110px;" />
 					</td>
 					<td colspan="2" style="padding-left:5px;"><a id="btn"
 						href="javascript:opt.search();" class="easyui-linkbutton"
@@ -39,17 +36,20 @@
 		<table id="dataGrid" data-options="fit:true, border:false"></table>
 	</div>
 	
-	<div id="addCategory" class="easyui-dialog" style="width:450px; height:200px;" closed="true" buttons="#dlg-buttons">
+	<div id="addCategory" class="easyui-dialog" style="width:450px; height:240px;" closed="true" buttons="#dlg-buttons">
     	<form id="addForm">
-    	<center>
-    		<div style="margin-bottom:10px;margin-top:20px">
-                <input name="id" type="hidden">
-                <input id="catCode" name="catCode" class="easyui-textbox" label="类别编号:"  required="true" style="width:80%">
-            </div>
-			<div style="margin-bottom:10px;margin-top:20px">
-				<input id="catName" name="catName" class="easyui-textbox" label="类别名称:"  required="true" style="width:80%">
-			</div>
-    	</center>
+			<center>
+				<div style="margin-bottom:10px;margin-top:20px">
+					<input name="id" type="hidden">
+					<input id="catCode" name="catCode" class="easyui-textbox" label="类别编号:"  required="true" style="width:80%">
+				</div>
+				<div style="margin-bottom:10px;margin-top:20px">
+					<input id="catName" name="catName" class="easyui-textbox" label="类别名称:"  required="true" style="width:80%">
+				</div>
+				<div style="margin-bottom:10px;margin-top:20px">
+					<input id="catDesc" name="catDesc" class="easyui-textbox" label="类别描述:"  style="width:80%">
+				</div>
+			</center>
 		</form>
 	</div>
 	<!-- 按钮 -->

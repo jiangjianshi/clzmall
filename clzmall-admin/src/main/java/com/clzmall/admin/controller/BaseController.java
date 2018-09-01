@@ -3,6 +3,10 @@ package com.clzmall.admin.controller;
 
 import com.clzmall.common.common.Consts;
 import com.clzmall.common.common.RespMsg;
+import com.clzmall.common.model.SysUser;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by jiangjianshi on 18/8/1.
@@ -51,8 +55,7 @@ public class BaseController {
     /**
      * 请求成功
      *
-     * @param msg,
-     *            data
+     * @param msg, data
      * @return
      */
     public <T> RespMsg<T> success(String msg, T data) {
@@ -85,6 +88,18 @@ public class BaseController {
         resp.setMsg(msg);
         resp.setData(data);
         return resp;
+    }
+
+
+    public Integer getUid(HttpServletRequest req) {
+
+        HttpSession session = req.getSession();
+        SysUser user = (SysUser) session.getAttribute(session.getId());
+        if (user != null) {
+            return user.getId();
+        } else {
+            return 0;
+        }
     }
 
 }

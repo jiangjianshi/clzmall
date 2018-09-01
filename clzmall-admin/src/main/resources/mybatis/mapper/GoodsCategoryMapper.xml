@@ -5,6 +5,7 @@
 
     <sql id="columns">
 		id,
+		shop_id,
         cat_code,
         cat_name,
         cat_desc,
@@ -15,6 +16,7 @@
     <!--查询结果集 -->
     <resultMap id="beanMap" type="com.clzmall.common.model.GoodsCategory">
         <result property="id" column="id"/>
+        <result property="shopId" column="shop_id"/>
         <result property="catCode" column="cat_code"/>
         <result property="catName" column="cat_name"/>
         <result property="catDesc" column="cat_desc"/>
@@ -22,6 +24,12 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <insert id="insert" useGeneratedKeys="true" keyProperty="vo.id" parameterType="com.clzmall.common.model.GoodsCategory">
+        insert into goods_category
+        ( <include refid="columns"/> )
+          values
+        (#{vo.id},#{vo.shopId},#{vo.catCode},#{vo.catName},#{vo.catDesc} , now(), now());
+    </insert>
 
     <select id="selectByPrimaryKey" resultMap="beanMap">
         select
@@ -30,10 +38,11 @@
         where a.id = #{id}
     </select>
 
-    <select id="selectAll" resultMap="beanMap">
+    <select id="selectByShopId" resultMap="beanMap">
         select
         <include refid="columns"/>
         from goods_category a
+        where a.shop_id = #{shopId}
     </select>
 
 

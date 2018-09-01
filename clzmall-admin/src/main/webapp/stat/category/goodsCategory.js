@@ -19,19 +19,12 @@ var dataGridParams = {
 		title : '类别名称',
 		align : 'left',
 		width : '20%'
-	}, {
-		field : 'status',
-		title : '账号状态',
-		align : 'left',
-		width : '20%',
-		formatter : function(value) {
-			if(value == '2'){
-				return '<span style="color:red">无效</span>';
-			}else{
-				return '<span style="color:green">有效</span>';
-			}
-		}
-	}, {
+	} , {
+        field : 'catDesc',
+        title : '类别描述',
+        align : 'left',
+        width : '20%'
+    } , {
 		field : 'createTime',
 		title : '新增时间',
 		align : 'left',
@@ -47,7 +40,7 @@ var dataGridParams = {
 $(document).ready(function() {
 	grid = $("#dataGrid").datagrid({
 		title : '',
-		url : basePath + '/user/queryAllUsers',
+		url : basePath + '/goods/listCategory',
 		queryParams : dataGridParams.queryParams,
 		rownumbers : true,
 		height : 'auto',
@@ -78,8 +71,6 @@ $(document).ready(function() {
 		 }
 	});
 	
-	//加载下来列表
-	loadData();
 }); // $(document).ready--end
 
 opt = {
@@ -94,47 +85,19 @@ opt = {
 		$('#searchForm').form('clear');
 		grid.datagrid('reload', dataGridParams.queryParams);
 	},
-	del : function() {
-		var row = grid.datagrid("getSelected");
-		if(row == null){
-			alert("请选中要停用的账号")
-		}else{
-//			grid.datagrid("deleteRow",rowIndex);
-			$.ajax({
-    			url : '/user/setInvalidAccout',
-    			type : 'POST',
-    			data : {
-    				'id' : row.id
-    			},
-    			dataType : 'json',
-    			success : function(result) {
-    				if(result.status == 0){
-    					showMessage("处理结果", result.msg, 1000);
-    					grid.datagrid('reload');
-    				}else{
-    					alert(result.msg);
-    				}
-    			},
-    			error : function() {
-    				alert("操作失败，请联系管理员")
-    			}
-    		})
-		}
-		
-	},
 	add : function() {
 		$('#addCategory').dialog('open').dialog('center').dialog('setTitle','添加分类');
         $('#addForm').form('clear');
 	},
 	saveCategory : function() {
 		$('#addForm').form('submit',{
-            url: '/user/saveOrUpdateUsers',
+            url: '/goods/saveCategory',
             onSubmit: function(){
                 return $(this).form('validate');
             },
             success: function(result){
                 var result = eval('('+result+')');
-                if (result.status == 0){
+                if (result.code == 0){
                 	showMessage("处理结果", result.msg, 1000);
                 	 $('#addCategory').dialog('close');// close the dialog
                      grid.datagrid('reload');    // reload the user data
@@ -149,12 +112,3 @@ opt = {
 	}
 }
 
-function loadData() {
-	
-	$('#role').combobox({
-		data : auto_js_codes_imp['role_types_js'],
-		valueField : 'code_value',
-		textField : 'code_name',
-		panelHeight : 'auto'
-	});
-}

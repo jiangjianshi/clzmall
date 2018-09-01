@@ -4,7 +4,7 @@ function logout() {
 		url : basePath + "/logout",
 		type : 'post',
 		success : function(res) {
-			if(res.status ==0){
+			if(res.code ==0){
 				document.location.href = basePath + "/index";
 			}
 		},

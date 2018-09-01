@@ -14,6 +14,7 @@ import java.util.Date;
 public class Goods {
 
     private Integer id; //
+    private Integer shopId; //
     private String name; //
     private Integer categoryId; //类别
     private Integer storeAmount; //库存量

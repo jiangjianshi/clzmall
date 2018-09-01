@@ -21,7 +21,7 @@ var opt = {
 			dataType : 'json',
 			success : function(result) {
 
-				if (result.status == 1) {
+				if (result.code == 1) {
 					$("#msg_top").text(result.msg).css("color", "red");
 					$('#btn_login').linkbutton({text:'登录'});
 				} else {

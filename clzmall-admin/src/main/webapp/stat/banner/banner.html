@@ -36,18 +36,24 @@
 		<table id="dataGrid" data-options="fit:true, border:false"></table>
 	</div>
 	
-	<div id="addWin" class="easyui-dialog" style="width:450px; height:240px;" closed="true" buttons="#dlg-buttons">
+	<div id="addWin" class="easyui-dialog" style="width:450px; height:400px;" closed="true" buttons="#dlg-buttons">
     	<form id="addForm">
 			<center>
 				<div style="margin-bottom:10px;margin-top:20px">
 					<input name="id" type="hidden">
-					<input id="catCode" name="catCode" class="easyui-textbox" label="类别编号:"  required="true" style="width:80%">
+					<input id="title" name="title" class="easyui-textbox" label="标题:" data-options="prompt:'请填写标题', required:true"  style="width:80%">
 				</div>
 				<div style="margin-bottom:10px;margin-top:20px">
-					<input id="catName" name="catName" class="easyui-textbox" label="类别名称:"  required="true" style="width:80%">
+					<input id="imageFile" name="imageFile" class="easyui-filebox" label="选题背景图:" data-options="prompt:'选择文件', buttonText:'选择文件', required:true" , style="width:80%">
 				</div>
 				<div style="margin-bottom:10px;margin-top:20px">
-					<input id="catDesc" name="catDesc" class="easyui-textbox" label="类别描述:"  style="width:80%">
+					<input id="jumpUrl" name="jumpUrl" class="easyui-textbox" label="跳转链接:" data-options="prompt:'二选一'"  style="width:80%">
+				</div>
+				<div style="margin-bottom:10px;margin-top:20px">
+					<input id="goodsId" name="goodsId" class="easyui-textbox" label="跳转产品:" data-options="prompt:'二选一'" style="width:80%">
+				</div>
+				<div style="margin-bottom:10px;margin-top:20px">
+					<input id="sortNo" name="sortNo" class="easyui-numberbox" label="排序:" data-options="prompt:'请填写序号',min:0" required="true" style="width:80%">
 				</div>
 			</center>
 		</form>

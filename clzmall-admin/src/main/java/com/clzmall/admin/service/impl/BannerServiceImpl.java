@@ -31,4 +31,10 @@ public class BannerServiceImpl implements BannerService{
         PagedList<Banner> pagedList = PagedList.newMe(pageInfo);
         return pagedList;
     }
+
+    @Override
+    public int addBanner(Banner banner) {
+
+        return  bannerMapper.insert(banner);
+    }
 }

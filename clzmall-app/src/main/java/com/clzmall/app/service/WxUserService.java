@@ -11,4 +11,6 @@ public interface WxUserService {
     int saveUser(String code, WxUser user);
 
     WxUser checkLogin(String uid);
+
+    Integer getUserScore(String uid);
 }

@@ -1,5 +1,7 @@
 package com.clzmall.app.controller;
 
+import com.clzmall.app.entity.dto.PayParam;
+import com.clzmall.app.entity.vo.PayVo;
 import com.clzmall.app.service.OrdersService;
 import com.clzmall.app.entity.dto.OrderDto;
 import com.clzmall.app.entity.dto.OrderStatusCount;
@@ -83,7 +85,7 @@ public class OrdersController extends BaseController {
     public RespMsg<Integer> confirmOrder(Integer orderId) {
 
         try {
-            int cnt =  ordersService.confirmOrder(orderId);
+            int cnt = ordersService.confirmOrder(orderId);
             return success("获取成功", cnt);
         } catch (Exception e) {
             log.error("确认收货失败", e);
@@ -91,4 +93,15 @@ public class OrdersController extends BaseController {
         }
     }
 
+    @RequestMapping("getPayData")
+    public RespMsg<PayVo> getPayData(PayParam payParam) {
+
+        try {
+            PayVo payData = ordersService.getPayData(payParam);
+            return success("获取成功", payData);
+        } catch (Exception e) {
+            log.error("获取失败", e);
+            return fail("获取失败");
+        }
+    }
 }

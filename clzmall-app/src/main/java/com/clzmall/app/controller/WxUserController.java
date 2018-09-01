@@ -66,5 +66,14 @@ public class WxUserController extends BaseController {
 
     }
 
+    @RequestMapping("getUserScore")
+    public RespMsg<Integer> getUserScore(String uid, String token) {
 
+        if (StringUtils.isEmpty(uid)) {
+            return fail("未登录");
+        }
+        Integer score = wxUserService.getUserScore(uid);
+        return success("获取成功", score);
+
+    }
 }

@@ -16,4 +16,6 @@ public interface BannerMapper {
 
     List<Banner> selectByShopId(@Param("shopId") Integer shopId, @Param("title") String title);
 
+    int insert(@Param("vo") Banner banner);
+
 }

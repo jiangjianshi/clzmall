@@ -6,6 +6,7 @@
     <sql id="columns">
 		id,
         open_id,
+        score,
         nick_name,
         gender,
         city,
@@ -25,6 +26,7 @@
     <resultMap id="beanMap" type="com.clzmall.common.model.WxUser">
         <result property="id" column="id"/>
         <result property="openId" column="open_id"/>
+        <result property="score" column="score"/>
         <result property="nickName" column="nick_name"/>
         <result property="gender" column="gender"/>
         <result property="city" column="city"/>
@@ -63,7 +65,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="vo.id" parameterType="com.clzmall.common.model.WxUser">
         insert into wx_user
-           ( open_id,
+           ( open_id,score,
             nick_name,
             gender,
             city,
@@ -78,7 +80,7 @@
             create_time,
             update_time)
         values
-            (#{vo.openId},#{vo.nickName},#{vo.gender},#{vo.city},#{vo.province},
+            (#{vo.openId},#{vo.score},#{vo.nickName},#{vo.gender},#{vo.city},#{vo.province},
             #{vo.country},#{vo.language} ,#{vo.userRemark},#{vo.grayStatus},
             #{vo.avatarUrl},#{vo.token}, now(), now(), now());
     </insert>
@@ -87,6 +89,7 @@
     <update id="updateSelective" parameterType="com.clzmall.common.model.WxUser">
         UPDATE wx_user a
         <trim prefix="set" suffixOverrides=",">
+            <if test="vo.score != null">a.score = #{vo.score},</if>
             <if test="vo.openId != null">a.open_id = #{vo.openId},</if>
             <if test="vo.nickName != null">a.nick_name = #{vo.nickName},</if>
             <if test="vo.gender != null">a.gender = #{vo.gender},</if>

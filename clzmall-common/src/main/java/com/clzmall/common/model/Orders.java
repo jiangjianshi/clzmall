@@ -20,8 +20,8 @@ public class Orders {
     private Integer uid; //用户id
     private Integer addressId; //地址id
     private BigDecimal realAmount; //订单真是价格
-    private Integer useScore; //使用积分
-    private Integer gainScore; //获得积分
+    private int useScore; //使用积分
+    private int gainScore; //获得积分
     private String remark; //评论
     private Integer status; //订单状态：0：待付款， 1代发货，2待收货，3 待评价，4 已完成 ， -1 已取消
     private String statusStr;

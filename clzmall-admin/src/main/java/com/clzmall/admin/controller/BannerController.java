@@ -31,4 +31,11 @@ public class BannerController extends BaseController {
         PagedList<Banner> pagedList = bannerService.listBanners(getUid(req), title);
         return pagedList;
     }
+
+    @RequestMapping(value = "/addBanner")
+    public RespMsg<Integer> addBanner(HttpServletRequest req, Banner banner) {
+
+        return success("添加成");
+    }
+
 }

@@ -11,4 +11,6 @@ import java.util.List;
 public interface BannerService {
 
     PagedList<Banner> listBanners(Integer uid, String title);
+
+    int addBanner(Banner banner);
 }

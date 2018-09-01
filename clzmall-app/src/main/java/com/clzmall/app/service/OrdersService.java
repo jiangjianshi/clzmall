@@ -2,8 +2,10 @@ package com.clzmall.app.service;
 
 import com.clzmall.app.entity.dto.OrderDto;
 import com.clzmall.app.entity.dto.OrderStatusCount;
+import com.clzmall.app.entity.dto.PayParam;
 import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
+import com.clzmall.app.entity.vo.PayVo;
 import com.clzmall.common.model.Orders;
 
 /**
@@ -25,4 +27,6 @@ public interface OrdersService {
     OrderDetailVo getOrderDetail(Integer orderId);
 
     int confirmOrder(Integer orderId);
+
+    PayVo getPayData(PayParam payParam);
 }

@@ -13,6 +13,7 @@ import java.util.Date;
 public class WxUser {
 
     private Integer id; //用户_id
+    private int score; //用户积分
     private String openId; //微信的open_id
     private String nickName; //用户昵称
     private Integer gender; //性别

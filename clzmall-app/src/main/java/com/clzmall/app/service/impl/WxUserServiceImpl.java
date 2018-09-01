@@ -50,6 +50,7 @@ public class WxUserServiceImpl implements WxUserService {
         }
         if(session != null){
             user.setOpenId(session.getOpenid());
+            user.setScore(5);
         }
         wxUserMapper.insert(user);
         return user.getId();
@@ -60,5 +61,17 @@ public class WxUserServiceImpl implements WxUserService {
     public WxUser checkLogin(String uid) {
 
         return wxUserMapper.selectByPrimaryKey(Integer.parseInt(uid));
+    }
+
+
+    @Override
+    public Integer getUserScore(String uid) {
+
+        WxUser user = wxUserMapper.selectByPrimaryKey(Integer.parseInt(uid));
+        if(user != null){
+            return user.getScore();
+        }else {
+            return 0;
+        }
     }
 }

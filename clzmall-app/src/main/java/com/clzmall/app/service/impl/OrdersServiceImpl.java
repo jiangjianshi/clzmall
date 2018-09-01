@@ -1,12 +1,10 @@
 package com.clzmall.app.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.clzmall.app.entity.dto.GoodsDto;
-import com.clzmall.app.entity.dto.OrderDto;
-import com.clzmall.app.entity.dto.OrderStatusCount;
-import com.clzmall.app.entity.dto.UserOrderDto;
+import com.clzmall.app.entity.dto.*;
 import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
+import com.clzmall.app.entity.vo.PayVo;
 import com.clzmall.app.mapper.OrderGoodsRelationMapper;
 import com.clzmall.app.mapper.OrdersMapper;
 import com.clzmall.app.service.OrdersService;
@@ -144,6 +142,13 @@ public class OrdersServiceImpl implements OrdersService {
         orders.setId(orderId);
         orders.setStatus(OrderTypeEnum.DONE.getCode());
         return ordersMapper.updateSelective(orders);
+    }
+
+    @Override
+    public PayVo getPayData(PayParam payParam) {
+
+
+        return new PayVo();
     }
 
 }

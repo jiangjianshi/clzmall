@@ -8,7 +8,7 @@ import com.clzmall.common.model.WxUser;
  */
 public interface WxUserService {
 
-    int saveUser(String code, WxUser user);
+    int saveUser(Integer inviterUid, String code, WxUser user);
 
     WxUser checkLogin(String uid);
 

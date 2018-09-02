@@ -29,7 +29,7 @@ public class SendTemplateMessage {
     @Scheduled(fixedRate = 5 * 1000) // 每59分钟执行一次
     public void test() throws Exception {
 
-        Date ct = DateUtils.addMinutes(new Date(), -30);
+        Date ct = DateUtils.addMinutes(new Date(), -3);
         List<TemplateMsg> list = TemplateMsgMapper.selectByTriggerTypeAndCreateTime(-1, ct);
         if (!CollectionUtils.isEmpty(list)) {
             for (TemplateMsg msg : list) {

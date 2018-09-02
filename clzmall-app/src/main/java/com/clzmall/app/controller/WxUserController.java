@@ -26,7 +26,7 @@ public class WxUserController extends BaseController {
 
 
     @RequestMapping("registerUser")
-    public RespMsg<Map> registerUser(String code, String userinfo) {
+    public RespMsg<Map> registerUser(Integer inviterUid, String code, String userinfo) {
 
         try {
             WxUser user = null;
@@ -34,7 +34,7 @@ public class WxUserController extends BaseController {
                 user = JSON.parseObject(userinfo, WxUser.class);
                 user.setToken(code);
             }
-            int uid = wxUserService.saveUser(code, user);
+            int uid = wxUserService.saveUser(inviterUid, code, user);
             if (uid != 0) {
                 Map map = new HashMap();
                 map.put("token", code);

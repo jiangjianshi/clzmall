@@ -55,7 +55,7 @@
         from template_msg a
         where type = 0
         and a.trigger_type = #{triggerType}
-        and  DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i') > DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i')
+        and  DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i') >= DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i')
     </select>
 
 

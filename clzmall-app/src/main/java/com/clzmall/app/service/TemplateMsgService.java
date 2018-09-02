@@ -10,4 +10,6 @@ public interface TemplateMsgService {
 
 
     int saveTemplateMsgInfo(TemplateMsg msgInfo);
+
+    boolean sendTemplateMsgToUser(TemplateMsg msg);
 }

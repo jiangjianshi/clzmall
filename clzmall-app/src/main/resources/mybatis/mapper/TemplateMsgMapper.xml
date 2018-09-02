@@ -25,7 +25,7 @@
         <result property="type" column="type"/>
         <result property="module" column="module"/>
         <result property="businessId" column="business_id"/>
-        <result property="trigger" column="trigger"/>
+        <result property="triggerType" column="trigger_type"/>
         <result property="templateId" column="template_id"/>
         <result property="formId" column="form_id"/>
         <result property="url" column="url"/>
@@ -49,10 +49,13 @@
         where a.id = #{id}
     </select>
 
-    <select id="selectAll" resultMap="beanMap">
+    <select id="selectByTriggerTypeAndCreateTime" resultMap="beanMap">
         select
         <include refid="columns"/>
-        from template_msg a where status = 1
+        from template_msg a
+        where type = 0
+        and a.trigger_type = #{triggerType}
+        and  DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i') > DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i')
     </select>
 
 
@@ -64,7 +67,7 @@
             <if test="vo.type != null"> a.type = #{vo.type},</if>
             <if test="vo.module != null"> a.module = #{vo.module},</if>
             <if test="vo.businessId != null"> a.business_id = #{vo.businessId},</if>
-            <if test="vo.trigger != null"> a.trigger = #{vo.trigger},</if>
+            <if test="vo.triggerType != null"> a.trigger_type = #{vo.triggerType},</if>
             <if test="vo.templateId != null"> a.template_id = #{vo.templateId},</if>
             <if test="vo.formId != null"> a.form_id = #{vo.formId},</if>
             <if test="vo.url != null"> a.url = #{vo.url},</if>

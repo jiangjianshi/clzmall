@@ -17,7 +17,7 @@ import java.util.Map;
 public class WxUtil {
 
     public static boolean sendTemplateMsg(TemplateMsgDto msgDto) {
-
+        log.info("模板消息信息：{}", JSON.toJSONString(msgDto));
         String accessToken = getAccessTokenForWX();
         String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken;
         try {

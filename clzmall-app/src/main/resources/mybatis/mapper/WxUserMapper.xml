@@ -6,6 +6,7 @@
     <sql id="columns">
 		id,
         open_id,
+        mobile,
         score,
         nick_name,
         gender,
@@ -26,6 +27,7 @@
     <resultMap id="beanMap" type="com.clzmall.common.model.WxUser">
         <result property="id" column="id"/>
         <result property="openId" column="open_id"/>
+        <result property="mobile" column="mobile"/>
         <result property="score" column="score"/>
         <result property="nickName" column="nick_name"/>
         <result property="gender" column="gender"/>
@@ -91,6 +93,7 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="vo.score != null">a.score = #{vo.score},</if>
             <if test="vo.openId != null">a.open_id = #{vo.openId},</if>
+            <if test="vo.mobile != null">a.mobile = #{vo.mobile},</if>
             <if test="vo.nickName != null">a.nick_name = #{vo.nickName},</if>
             <if test="vo.gender != null">a.gender = #{vo.gender},</if>
             <if test="vo.city != null">a.city = #{vo.city},</if>

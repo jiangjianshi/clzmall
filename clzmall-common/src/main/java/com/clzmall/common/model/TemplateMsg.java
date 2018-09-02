@@ -17,9 +17,9 @@ public class TemplateMsg {
     private Integer type; //
     private String module; //
     private Integer businessId; //
-    private Integer trigger; //
+    private Integer triggerType; //
     private String templateId; //
-    private Integer formId; //
+    private String formId; //
     private String url; //
     private String postJsonString; //
     private Date createTime; //

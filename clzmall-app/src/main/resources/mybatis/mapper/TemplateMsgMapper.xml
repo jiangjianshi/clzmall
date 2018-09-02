@@ -9,7 +9,7 @@
         type,
         module,
         business_id,
-        trigger,
+        trigger_type,
         template_id,
         form_id,
         url,
@@ -34,24 +34,31 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <insert id="insert" useGeneratedKeys="true" keyProperty="vo.id" parameterType="com.clzmall.common.model.TemplateMsg">
+        insert into template_msg
+        ( <include refid="columns"/> )
+        values
+        (#{vo.id},#{vo.uid},#{vo.type},#{vo.module},#{vo.businessId},#{vo.triggerType},#{vo.templateId}, #{vo.formId},#{vo.url},#{vo.postJsonString},now(), now());
+
+    </insert>
 
     <select id="selectByPrimaryKey" resultMap="beanMap">
         select
         <include refid="columns"/>
-        from banner a
+        from template_msg a
         where a.id = #{id}
     </select>
 
     <select id="selectAll" resultMap="beanMap">
         select
         <include refid="columns"/>
-        from banner a where status = 1
+        from template_msg a where status = 1
     </select>
 
 
     <!-- 选择更新 -->
     <update id="updateSelective" parameterType="com.clzmall.common.model.TemplateMsg">
-        UPDATE banner a
+        UPDATE template_msg a
         <trim prefix="set" suffixOverrides=",">
             <if test="vo.uid != null"> a.uid = #{vo.uid},</if>
             <if test="vo.type != null"> a.type = #{vo.type},</if>

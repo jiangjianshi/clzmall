@@ -7,6 +7,7 @@ import com.clzmall.app.entity.dto.OrderDto;
 import com.clzmall.app.entity.dto.OrderStatusCount;
 import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
+import com.clzmall.app.service.TemplateMsgService;
 import com.clzmall.common.common.RespMsg;
 import com.clzmall.common.model.Orders;
 import com.clzmall.common.model.TemplateMsg;
@@ -26,6 +27,8 @@ public class OrdersController extends BaseController {
     @Autowired
     private OrdersService ordersService;
 
+    @Autowired
+    private TemplateMsgService templateMsgService;
 
     @RequestMapping("listOrders")
     public RespMsg<OrderListVo> listOrders(Integer uid, Integer status) {
@@ -110,11 +113,12 @@ public class OrdersController extends BaseController {
     public RespMsg<Integer> putTemplateMsg(TemplateMsg msg) {
 
         try {
-            int count = ordersService.putTemplateMsg(msg);
-            return success("获取成功", count);
+            int count = templateMsgService.saveTemplateMsgInfo(msg);
+            return success("添加成功", count);
         } catch (Exception e) {
-            log.error("获取失败", e);
-            return fail("获取失败");
+            log.error("添加失败", e);
+            e.printStackTrace();
+            return fail("添加失败");
         }
     }
 

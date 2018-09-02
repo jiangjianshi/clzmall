@@ -76,4 +76,16 @@ public class WxUserController extends BaseController {
         return success("获取成功", score);
 
     }
+
+    @RequestMapping("getWxUserInfo")
+    public RespMsg<WxUser> getWxUserInfo(String uid, String token) {
+
+        if (StringUtils.isEmpty(uid)) {
+            return fail("uid为空");
+        }
+        WxUser user = wxUserService.getUserInfo(uid);
+        return success("获取成功", user);
+
+    }
+
 }

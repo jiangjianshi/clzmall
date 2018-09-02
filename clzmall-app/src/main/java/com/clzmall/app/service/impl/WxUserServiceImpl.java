@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.clzmall.app.entity.dto.WxSession;
 import com.clzmall.app.service.WxUserService;
 import com.clzmall.app.mapper.WxUserMapper;
+import com.clzmall.common.common.WxConsts;
 import com.clzmall.common.model.WxUser;
 import com.clzmall.common.util.HttpUtil;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,10 @@ public class WxUserServiceImpl implements WxUserService {
 //        https://api.weixin.qq.com/sns/jscode2session?appid=wx20452b87603c728d&secret=e5e1887306ee8ea0aad9fd6f174d434a&js_code=071FQsy60RS7sJ1Du7y60d5By60FQsy-&grant_type=authorization_code
 
         Map<String, String> param = new HashMap<>();
-        param.put("appid", "wx20452b87603c728d");
-        param.put("secret", "e5e1887306ee8ea0aad9fd6f174d434a");
+        param.put("appid", WxConsts.APPID);
+        param.put("secret", WxConsts.SECRET);
         param.put("js_code", code);
-        param.put("grant_type", "authorization_code");
+        param.put("grant_type", WxConsts.WX_GRANT_TYPE_FOR_OPENID);
 
         WxSession session = null;
         try {
@@ -73,5 +74,13 @@ public class WxUserServiceImpl implements WxUserService {
         }else {
             return 0;
         }
+    }
+
+    @Override
+    public WxUser getUserInfo(String uid) {
+
+
+        WxUser user = wxUserMapper.selectByPrimaryKey(Integer.parseInt(uid));
+        return user;
     }
 }

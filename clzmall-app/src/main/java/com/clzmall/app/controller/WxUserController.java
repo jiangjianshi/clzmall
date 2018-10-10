@@ -88,4 +88,17 @@ public class WxUserController extends BaseController {
 
     }
 
+
+    @RequestMapping("bindMobile")
+    public RespMsg<Boolean> bindMobile(String token, Integer uid, String encryptedData, String iv) {
+
+        boolean result = wxUserService.bindMobile(token, uid, encryptedData, iv);
+        if (result) {
+            return success("绑定成功", result);
+        } else {
+            return fail("绑定失败");
+        }
+
+    }
+
 }

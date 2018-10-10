@@ -18,4 +18,6 @@ public interface WxUserMapper {
 
     int updateScoreByUid(@Param("score") int score, @Param("uid") Integer uid);
 
+    int updateSelective(@Param("vo") WxUser vo);
+
 }

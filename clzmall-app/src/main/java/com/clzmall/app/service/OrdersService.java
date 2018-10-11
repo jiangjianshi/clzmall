@@ -31,5 +31,4 @@ public interface OrdersService {
 
     PayVo getPayData(PayParam payParam);
 
-    int putTemplateMsg(TemplateMsg msg);
 }

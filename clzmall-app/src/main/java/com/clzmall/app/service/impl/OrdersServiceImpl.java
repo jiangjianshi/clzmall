@@ -8,12 +8,17 @@ import com.clzmall.app.entity.vo.PayVo;
 import com.clzmall.app.mapper.OrderGoodsRelationMapper;
 import com.clzmall.app.mapper.OrdersMapper;
 import com.clzmall.app.service.OrdersService;
+import com.clzmall.app.util.HttpRequest;
+import com.clzmall.app.util.RandomStringGenerator;
+import com.clzmall.app.util.Signature;
+import com.clzmall.common.common.WxConsts;
 import com.clzmall.common.enums.OrderTypeEnum;
 import com.clzmall.common.model.OrderGoodsRelation;
 import com.clzmall.common.model.Orders;
 import com.clzmall.common.model.TemplateMsg;
 import com.clzmall.common.util.DateUtil;
 import com.google.common.collect.Lists;
+import com.thoughtworks.xstream.XStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +34,18 @@ import java.util.stream.Collectors;
 @Transactional
 public class OrdersServiceImpl implements OrdersService {
 
+
     @Autowired
     private OrdersMapper ordersMapper;
 
     @Autowired
     private OrderGoodsRelationMapper orderGoodsRelationMapper;
+
+
+    //交易类型
+    private final String trade_type = "JSAPI";
+    // 统一下单API接口链接
+    private final String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
 
     @Override
@@ -144,17 +156,54 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public PayVo getPayData(PayParam payParam) {
-        PayVo paydata = new PayVo();
-        paydata.setNonceStr(UUID.randomUUID().toString().replace("-", ""));
-        paydata.setTimeStamp(String.valueOf(new Date().getTime()));
-        paydata.setPrepayId(UUID.randomUUID().toString().replace("-", ""));
-        paydata.setSign(UUID.randomUUID().toString().replace("-", ""));
-        return paydata;
+        String money = "10";
+        String title = "家具1";
+        try {
+            OrderInfo order = new OrderInfo();
+            order.setAppid(WxConsts.APPID);
+            order.setMch_id(WxConsts.MCH_ID);
+            order.setNonce_str(RandomStringGenerator.getRandomStringByLength(32));
+            order.setBody(title);
+            order.setOut_trade_no(RandomStringGenerator.getRandomStringByLength(32));
+            order.setTotal_fee(Integer.parseInt(money));
+            // 该金钱其实10 是 0.1元
+            order.setSpbill_create_ip("172.30.5.82");
+            order.setNotify_url("http://www.weixin.qq.com/wxpay/pay.php");
+            order.setTrade_type(trade_type);
+            order.setOpenid("oVxip5d2A2HOjH0VP_YYOGLG6D2o");
+            order.setSign_type("MD5");
+            //生成签名
+            String sign = Signature.getSign(order);
+            order.setSign(sign);
+            String result = HttpRequest.sendPost(url, order);
+            System.out.println(result);
+            XStream xStream = new XStream();
+            xStream.alias("xml", OrderReturnInfo.class);
+            OrderReturnInfo returnInfo = (OrderReturnInfo) xStream.fromXML(result);
+            // 二次签名
+            if ("SUCCESS".equals(returnInfo.getReturn_code()) && returnInfo.getReturn_code().equals(returnInfo.getResult_code())) {
+                SignInfo signInfo = new SignInfo();
+                signInfo.setAppId(WxConsts.APPID);
+                long time = System.currentTimeMillis() / 1000;
+                signInfo.setTimeStamp(String.valueOf(time));
+                signInfo.setNonceStr(RandomStringGenerator.getRandomStringByLength(32));
+                signInfo.setRepay_id("prepay_id=" + returnInfo.getPrepay_id());
+                signInfo.setSignType("MD5");
+                //生成签名
+                String sign1 = Signature.getSign(signInfo);
+                PayVo paydata = new PayVo();
+                paydata.setNonceStr(signInfo.getNonceStr());
+                paydata.setTimeStamp(signInfo.getTimeStamp());
+                paydata.setPrepayId(signInfo.getRepay_id());
+                paydata.setSign(sign1);
+                return paydata;
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("统一下单失败");
+        }
+        return null;
     }
 
-    @Override
-    public int putTemplateMsg(TemplateMsg msg) {
-        return 0;
-    }
 }

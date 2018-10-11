@@ -102,7 +102,11 @@ public class OrdersController extends BaseController {
 
         try {
             PayVo payData = ordersService.getPayData(payParam);
-            return success("获取成功", payData);
+            if (payData == null) {
+                return fail("获取失败");
+            } else {
+                return success("获取成功", payData);
+            }
         } catch (Exception e) {
             log.error("获取失败", e);
             return fail("获取失败");

@@ -1,7 +1,5 @@
 package com.clzmall.app.service.impl;
 
-import com.clzmall.app.util.Signature;
-import com.clzmall.app.util.WXPayConstants.SignType;
 import com.alibaba.fastjson.JSON;
 import com.clzmall.app.entity.dto.*;
 import com.clzmall.app.entity.vo.OrderDetailVo;
@@ -11,6 +9,7 @@ import com.clzmall.app.mapper.OrderGoodsRelationMapper;
 import com.clzmall.app.mapper.OrdersMapper;
 import com.clzmall.app.service.OrdersService;
 import com.clzmall.app.util.HttpRequest;
+import com.clzmall.app.util.Signature;
 import com.clzmall.app.util.WXPayUtil;
 import com.clzmall.common.common.WxConsts;
 import com.clzmall.common.enums.OrderTypeEnum;
@@ -20,7 +19,7 @@ import com.clzmall.common.util.DateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
-import org.springframework.beans.BeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +34,7 @@ import java.util.stream.Collectors;
 /**
  * Created by jiangjianshi on 18/8/5.
  */
+@Slf4j
 @Service
 @Transactional
 public class OrdersServiceImpl implements OrdersService {
@@ -161,25 +161,21 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public PayVo getPayData(PayParam payParam) {
-        String money = "10";
-        String title = "jiaju1";
         try {
             Map signData = Maps.newHashMap();
             signData.put("appid", WxConsts.APPID);
             signData.put("mch_id", WxConsts.MCH_ID);
             signData.put("nonce_str", WXPayUtil.generateRandomStr());
-            signData.put("body", title);
+            signData.put("body", payParam.getRemark());
             signData.put("out_trade_no", WXPayUtil.generateRandomStr());
-            signData.put("total_fee", money);
-            signData.put("spbill_create_ip", "172.30.5.82");
+            signData.put("total_fee", payParam.getMoney().multiply(new BigDecimal(100)).toString());
+            signData.put("spbill_create_ip", "192.168.2.115");
             signData.put("notify_url", "https://www.weixin.qq.com/wxpay/pay.php");
             signData.put("trade_type", trade_type);
             signData.put("openid", "oVxip5d2A2HOjH0VP_YYOGLG6D2o");
 
-//            WXPayUtil.generateSignature(signData, WxConsts.PAY_SECRET);
             String result = HttpRequest.sendPost(url, signData, WxConsts.PAY_SECRET);
-//            String result = HttpRequest.sendXMLDataByPost(url, signData, WxConsts.PAY_SECRET);
-            System.out.println(result);
+            log.info("统一下单返回结果：{}", result);
             XStream xStream = new XStream();
             xStream.alias("xml", OrderReturnInfo.class);
             OrderReturnInfo returnInfo = (OrderReturnInfo) xStream.fromXML(result);
@@ -187,8 +183,7 @@ public class OrdersServiceImpl implements OrdersService {
             if ("SUCCESS".equals(returnInfo.getReturn_code()) && returnInfo.getReturn_code().equals(returnInfo.getResult_code())) {
                 SignInfo signInfo = new SignInfo();
                 signInfo.setAppId(WxConsts.APPID);
-                long time = System.currentTimeMillis() / 1000;
-                signInfo.setTimeStamp(String.valueOf(time));
+                signInfo.setTimeStamp(String.valueOf(WXPayUtil.getCurrentTimestamp()));
                 signInfo.setNonceStr(WXPayUtil.generateRandomStr());
                 signInfo.setRepay_id("prepay_id=" + returnInfo.getPrepay_id());
                 signInfo.setSignType("MD5");

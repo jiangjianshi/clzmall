@@ -63,22 +63,6 @@ public class HttpRequest {
         return result;
     }
 
-    // 使用POST方法发送XML数据
-    public static String sendXMLDataByPost(String url, Map<String, String> map, String key) throws Exception {
-        HttpClient  client = HttpClients.createDefault();
-        HttpPost post = new HttpPost(url);
-        post.addHeader("Content-Type", "text/xml");
-        String postDataXML = WXPayUtil.generateSignedXml(map, key);
-        log.info("转换xml：{}", postDataXML);
-        post.setEntity(new StringEntity(postDataXML, "UTF-8"));
-        HttpResponse response = client.execute(post);
-        System.out.println(response.toString());
-        HttpEntity entity = response.getEntity();
-        String result = EntityUtils.toString(entity, "UTF-8");
-        return result;
-
-    }
-
     /**
      * 自定义证书管理器，信任所有证书	 * @author pc	 *
      */

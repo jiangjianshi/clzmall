@@ -17,5 +17,5 @@ public interface WxUserService {
 
     WxUser getUserInfo(String uid);
 
-    boolean bindMobile(String sessionKey, Integer uid, String encryptedData, String iv);
+    boolean bindMobile(Integer uid, String encryptedData, String iv);
 }

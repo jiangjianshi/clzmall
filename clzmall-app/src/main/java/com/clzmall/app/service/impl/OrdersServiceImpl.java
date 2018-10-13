@@ -5,14 +5,18 @@ import com.clzmall.app.entity.dto.*;
 import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
 import com.clzmall.app.entity.vo.PayVo;
+import com.clzmall.app.mapper.GoodsMapper;
 import com.clzmall.app.mapper.OrderGoodsRelationMapper;
 import com.clzmall.app.mapper.OrdersMapper;
+import com.clzmall.app.service.GoodsService;
 import com.clzmall.app.service.OrdersService;
+import com.clzmall.app.service.WxUserService;
 import com.clzmall.app.util.HttpRequest;
 import com.clzmall.app.util.Signature;
 import com.clzmall.app.util.WXPayUtil;
 import com.clzmall.common.common.WxConsts;
 import com.clzmall.common.enums.OrderTypeEnum;
+import com.clzmall.common.model.Goods;
 import com.clzmall.common.model.OrderGoodsRelation;
 import com.clzmall.common.model.Orders;
 import com.clzmall.common.util.DateUtil;
@@ -20,9 +24,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.text.resources.CollationData;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -46,6 +53,14 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private OrderGoodsRelationMapper orderGoodsRelationMapper;
 
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private WxUserService wxUserService;
 
     //交易类型
     private final String trade_type = "JSAPI";
@@ -97,11 +112,18 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public OrderDto calOrder(Integer uid, String goodsJsonStr, String remark) {
 
+        List<UserOrderDto> orders = JSON.parseArray(goodsJsonStr, UserOrderDto.class);
+        double totalFee = 0;
+        for (UserOrderDto order : orders) {
+            PriceDto priceDto = goodsService.calSelectedPrice(order.getGoodsId(), order.getPropertyChildIds());
+            totalFee += priceDto.getPrice() * order.getNumber();
+        }
+        Integer score = wxUserService.getUserScore(String.valueOf(uid));
         OrderDto dto = new OrderDto();
-        dto.setAmountLogistics(12);
-        dto.setAmountTotle(100);
-        dto.setIsNeedLogistics(1);
-        dto.setScore(12);
+        dto.setAmountLogistics(0);
+        dto.setAmountTotle(totalFee - score);
+        dto.setIsNeedLogistics(0);
+        dto.setScore(score);
         return dto;
     }
 
@@ -109,11 +131,18 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public Orders createOrder(Integer uid, String goodsJsonStr, String remark, Integer addressId) {
 
+        List<UserOrderDto> orders1 = JSON.parseArray(goodsJsonStr, UserOrderDto.class);
+        double totalFee = 0;
+        for (UserOrderDto order : orders1) {
+            PriceDto priceDto = goodsService.calSelectedPrice(order.getGoodsId(), order.getPropertyChildIds());
+            totalFee += priceDto.getPrice() * order.getNumber();
+        }
+        totalFee -= wxUserService.getUserScore(String.valueOf(uid));
         Orders order = new Orders();
         order.setUid(uid);
         order.setAddressId(addressId);
         order.setOrderCode(DateUtil.formatDateTime(new Date()) + new Random().nextInt(10000));
-        order.setRealAmount(new BigDecimal("99"));
+        order.setRealAmount(new BigDecimal(totalFee));
         order.setStatus(0);
         order.setRemark(remark);
         order.setCreateTime(new Date());

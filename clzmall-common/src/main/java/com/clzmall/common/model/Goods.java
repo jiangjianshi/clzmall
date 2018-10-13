@@ -19,7 +19,7 @@ public class Goods {
     private Integer categoryId; //类别
     private Integer storeAmount; //库存量
     private double minPrice; //价格
-    private double originalPrice; //
+    private double originalPrice; //原始价格
     private String brand; //品牌
     private Date marketTime; //上市时间
     private Integer shareBonus; //分享奖励

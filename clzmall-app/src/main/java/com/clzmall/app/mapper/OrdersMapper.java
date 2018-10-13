@@ -20,4 +20,6 @@ public interface OrdersMapper {
 
     int updateSelective(@Param("vo") Orders vo);
 
+    int updateStatusByOrderCode(@Param("orderCode") String orderCode, @Param("status") Integer status);
+
 }

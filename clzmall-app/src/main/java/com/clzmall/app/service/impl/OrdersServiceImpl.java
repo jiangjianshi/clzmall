@@ -16,7 +16,6 @@ import com.clzmall.app.util.Signature;
 import com.clzmall.app.util.WXPayUtil;
 import com.clzmall.common.common.WxConsts;
 import com.clzmall.common.enums.OrderTypeEnum;
-import com.clzmall.common.model.Goods;
 import com.clzmall.common.model.OrderGoodsRelation;
 import com.clzmall.common.model.Orders;
 import com.clzmall.common.util.DateUtil;
@@ -24,12 +23,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.text.resources.CollationData;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -84,12 +81,15 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public int closeOrder(Integer orderId) {
+    public int updateOrder(Orders order) {
+        if (StringUtils.isNotEmpty(order.getOrderCode())) {
+            return ordersMapper.updateStatusByOrderCode(order.getOrderCode(), order.getStatus());
+        } else if (order.getId() != null) {
+            return ordersMapper.updateSelective(order);
+        } else {
+            throw new RuntimeException("参数异常");
+        }
 
-        Orders order = new Orders();
-        order.setId(orderId);
-        order.setStatus(-1);
-        return ordersMapper.updateSelective(order);
     }
 
     @Override
@@ -197,7 +197,8 @@ public class OrdersServiceImpl implements OrdersService {
             signData.put("nonce_str", WXPayUtil.generateRandomStr());
             signData.put("body", payParam.getRemark());
             signData.put("out_trade_no", WXPayUtil.generateRandomStr());
-            signData.put("total_fee", payParam.getMoney().multiply(new BigDecimal(100)).toString());
+//            signData.put("total_fee", payParam.getMoney().multiply(new BigDecimal(100)).toString());
+            signData.put("total_fee", "1");
             signData.put("spbill_create_ip", "192.168.2.115");
             signData.put("notify_url", "https://www.weixin.qq.com/wxpay/pay.php");
             signData.put("trade_type", trade_type);

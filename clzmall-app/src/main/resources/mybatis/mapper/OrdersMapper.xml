@@ -61,12 +61,18 @@
             #{vo.remark},#{vo.status} , now(), now());
     </insert>
 
+    <!-- 选择更新 -->
+    <update id="updateStatusByOrderCode">
+        UPDATE orders a
+          set a.status = #{status}
+        WHERE a.order_code = #{orderCode}
+    </update>
 
     <!-- 选择更新 -->
     <update id="updateSelective" parameterType="com.clzmall.common.model.Orders">
         UPDATE orders a
         <trim prefix="set" suffixOverrides=",">
-            <if test="vo.orderCode != null"> a.order_dode = #{vo.orderCode},</if>
+            <if test="vo.orderCode != null"> a.order_code = #{vo.orderCode},</if>
             <if test="vo.uid != null"> a.uid = #{vo.uid},</if>
             <if test="vo.addressId != null"> a.address_id = #{vo.addressId},</if>
             <if test="vo.realAmount != null"> a.real_amount = #{vo.realAmount},</if>

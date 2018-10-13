@@ -17,7 +17,7 @@ public interface OrdersService {
 
     OrderListVo listOrders(Integer uid, Integer status);
 
-    int closeOrder(Integer orderId);
+    int updateOrder(Orders order);
 
     OrderStatusCount statisticsOrders(Integer uid);
 

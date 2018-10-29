@@ -1,5 +1,6 @@
 package com.clzmall.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 
@@ -27,7 +28,10 @@ public class WxUser {
     private Integer grayStatus; //灰度用户状态，0是正常登陆用户，1是不需要登陆的用户
     private String avatarUrl; //用户头像
     private String token; // 登录token
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date loginTime; //登录时间
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime; //
     private Date updateTime; //
 

@@ -19,17 +19,16 @@ import java.util.List;
 @Service
 @Transactional
 @Slf4j
-public class WxUserServiceImpl implements WxUserService{
+public class WxUserServiceImpl implements WxUserService {
 
     @Resource
     private WxUserMapper wxUserMapper;
 
 
-
     @Override
-    public PagedList<WxUser> listWxUser() {
+    public PagedList<WxUser> listWxUser(String mobile, String nickName) {
 
-        List<WxUser> userList = wxUserMapper.selectAll();
+        List<WxUser> userList = wxUserMapper.selectAll(mobile, nickName);
         PageInfo<WxUser> pageInfo = new PageInfo<>(userList);
         PagedList<WxUser> pagedList = PagedList.newMe(pageInfo);
         return pagedList;

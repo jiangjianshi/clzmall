@@ -18,7 +18,7 @@ var dataGridParams = {
         field : 'avatarUrl',
         title : '头像',
         align : 'left',
-        width : '20%',
+        width : '15%',
         formatter : function(value, row) {
             return "<img src='"+value+"' style='width:20px; height: 20px;'/>"
         }
@@ -27,7 +27,12 @@ var dataGridParams = {
 		title : '性别',
 		align : 'left',
 		width : '10%'
-	} , {
+	} ,{
+        field : 'mobile',
+        title : '绑定手机号',
+        align : 'left',
+        width : '15%'
+    } , {
         field : 'province',
         title : '省份',
         align : 'left',

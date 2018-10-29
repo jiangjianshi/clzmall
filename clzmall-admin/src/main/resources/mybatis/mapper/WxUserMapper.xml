@@ -50,6 +50,13 @@
         select
         <include refid="columns"/>
         from wx_user a
+        where 1=1
+        <if test="mobile != null">
+            and a.mobile = #{mobile}
+        </if>
+        <if test="nickName != null">
+            and a.nick_name like concat('%',concat(#{nickName},'%'))
+        </if>
     </select>
 
     <select id="selectByPrimaryKey" resultMap="beanMap">
@@ -58,30 +65,5 @@
         from wx_user a
         where a.id = #{uid}
     </select>
-
-
-    <!-- 选择更新 -->
-    <update id="updateSelective" parameterType="com.clzmall.common.model.WxUser">
-        UPDATE wx_user a
-        <trim prefix="set" suffixOverrides=",">
-            <if test="vo.score != null">a.score = #{vo.score},</if>
-            <if test="vo.openId != null">a.open_id = #{vo.openId},</if>
-            <if test="vo.inviterUid != null">a.inviter_uid = #{vo.inviterUid},</if>
-            <if test="vo.mobile != null">a.mobile = #{vo.mobile},</if>
-            <if test="vo.nickName != null">a.nick_name = #{vo.nickName},</if>
-            <if test="vo.gender != null">a.gender = #{vo.gender},</if>
-            <if test="vo.city != null">a.city = #{vo.city},</if>
-            <if test="vo.province != null">a.province = #{vo.province},</if>
-            <if test="vo.country != null">a.country = #{vo.country},</if>
-            <if test="vo.language != null">a.language = #{vo.language},</if>
-            <if test="vo.userRemark != null">a.user_remark = #{vo.userRemark},</if>
-            <if test="vo.grayStatus != null">a.gray_status = #{vo.grayStatus},</if>
-            <if test="vo.avatarUrl != null">a.avatar_url = #{vo.avatarUrl},</if>
-            <if test="vo.token != null">a.login_time = #{vo.token},</if>
-            <if test="vo.loginTime != null">a.login_time = #{vo.loginTime},</if>
-            <if test="vo.updateTime != null">a.update_time = now()</if>
-        </trim>
-        WHERE a.id = #{vo.id}
-    </update>
 
 </mapper>

@@ -22,14 +22,14 @@ public class WxUserController {
 
     /**
      *
-     * @param phone
+     * @param mobile
      * @param nickName
      * @return
      */
     @RequestMapping(value = "/queryWxUsers")
-    public PagedList<WxUser> queryWxUsers(String phone, String nickName) {
+    public PagedList<WxUser> queryWxUsers(String mobile, String nickName) {
 
-        PagedList<WxUser> pageList = wxUserService.listWxUser();
+        PagedList<WxUser> pageList = wxUserService.listWxUser(mobile, nickName);
         return pageList;
     }
 

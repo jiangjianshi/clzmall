@@ -59,6 +59,7 @@ public class WxUserServiceImpl implements WxUserService {
         }
         if (session != null) {
             user.setOpenId(session.getOpenid());
+            user.setToken(session.getSession_key());
             user.setScore(5);
         }
         if (inviterUid != null) {
@@ -99,11 +100,12 @@ public class WxUserServiceImpl implements WxUserService {
 
 
     @Override
-    public boolean bindMobile(String sessionKey, Integer uid, String encData, String iv) {
+    public boolean bindMobile(Integer uid, String encData, String iv) {
 
         byte[] encrypData = Base64.decodeBase64(encData.getBytes());
         byte[] ivData = Base64.decodeBase64(iv.getBytes());
-        byte[] wxSessionKeyData = Base64.decodeBase64(sessionKey.getBytes());
+        WxUser wxUser = wxUserMapper.selectByPrimaryKey(uid);
+        byte[] wxSessionKeyData = Base64.decodeBase64(wxUser.getToken().getBytes());
         try {
             String resultJson = decrypt(wxSessionKeyData, ivData, encrypData);
             log.info("获取手机号解密结果:{}", resultJson);
@@ -121,7 +123,7 @@ public class WxUserServiceImpl implements WxUserService {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     private String decrypt(byte[] key, byte[] iv, byte[] encData) throws Exception {

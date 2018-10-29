@@ -13,6 +13,7 @@ import com.clzmall.common.model.Orders;
 import com.clzmall.common.model.TemplateMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,24 @@ public class OrdersController extends BaseController {
 
     @RequestMapping("closeOrder")
     public RespMsg<Integer> closeOrder(Integer orderId) {
-        int cnt = ordersService.closeOrder(orderId);
+
+        Orders order = new Orders();
+        order.setId(orderId);
+        order.setStatus(-1);
+        int cnt = ordersService.updateOrder(order);
+        if (cnt == 1) {
+            return success("关闭成功", cnt);
+        } else {
+            return fail("操作失败");
+        }
+    }
+
+    @RequestMapping("successOrder")
+    public RespMsg<Integer> successOrder(String orderCode) {
+        Orders order = new Orders();
+        order.setOrderCode(orderCode);
+        order.setStatus(1);
+        int cnt = ordersService.updateOrder(order);
         if (cnt == 1) {
             return success("关闭成功", cnt);
         } else {

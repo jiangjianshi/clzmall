@@ -14,7 +14,7 @@ import java.util.Date;
 public class WxUser {
 
     private Integer id; //用户_id
-    private int score; //用户积分
+    private Integer score; //用户积分
     private String mobile; //手机号
     private Integer inviterUid; //邀请人ID
     private String openId; //微信的open_id

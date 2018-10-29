@@ -5,9 +5,12 @@ import com.clzmall.app.entity.dto.*;
 import com.clzmall.app.entity.vo.OrderDetailVo;
 import com.clzmall.app.entity.vo.OrderListVo;
 import com.clzmall.app.entity.vo.PayVo;
+import com.clzmall.app.mapper.GoodsMapper;
 import com.clzmall.app.mapper.OrderGoodsRelationMapper;
 import com.clzmall.app.mapper.OrdersMapper;
+import com.clzmall.app.service.GoodsService;
 import com.clzmall.app.service.OrdersService;
+import com.clzmall.app.service.WxUserService;
 import com.clzmall.app.util.HttpRequest;
 import com.clzmall.app.util.Signature;
 import com.clzmall.app.util.WXPayUtil;
@@ -20,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +50,14 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private OrderGoodsRelationMapper orderGoodsRelationMapper;
 
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private WxUserService wxUserService;
 
     //交易类型
     private final String trade_type = "JSAPI";
@@ -69,12 +81,15 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public int closeOrder(Integer orderId) {
+    public int updateOrder(Orders order) {
+        if (StringUtils.isNotEmpty(order.getOrderCode())) {
+            return ordersMapper.updateStatusByOrderCode(order.getOrderCode(), order.getStatus());
+        } else if (order.getId() != null) {
+            return ordersMapper.updateSelective(order);
+        } else {
+            throw new RuntimeException("参数异常");
+        }
 
-        Orders order = new Orders();
-        order.setId(orderId);
-        order.setStatus(-1);
-        return ordersMapper.updateSelective(order);
     }
 
     @Override
@@ -97,11 +112,18 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public OrderDto calOrder(Integer uid, String goodsJsonStr, String remark) {
 
+        List<UserOrderDto> orders = JSON.parseArray(goodsJsonStr, UserOrderDto.class);
+        double totalFee = 0;
+        for (UserOrderDto order : orders) {
+            PriceDto priceDto = goodsService.calSelectedPrice(order.getGoodsId(), order.getPropertyChildIds());
+            totalFee += priceDto.getPrice() * order.getNumber();
+        }
+        Integer score = wxUserService.getUserScore(String.valueOf(uid));
         OrderDto dto = new OrderDto();
-        dto.setAmountLogistics(12);
-        dto.setAmountTotle(100);
-        dto.setIsNeedLogistics(1);
-        dto.setScore(12);
+        dto.setAmountLogistics(0);
+        dto.setAmountTotle(totalFee - score);
+        dto.setIsNeedLogistics(0);
+        dto.setScore(score);
         return dto;
     }
 
@@ -109,11 +131,18 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public Orders createOrder(Integer uid, String goodsJsonStr, String remark, Integer addressId) {
 
+        List<UserOrderDto> orders1 = JSON.parseArray(goodsJsonStr, UserOrderDto.class);
+        double totalFee = 0;
+        for (UserOrderDto order : orders1) {
+            PriceDto priceDto = goodsService.calSelectedPrice(order.getGoodsId(), order.getPropertyChildIds());
+            totalFee += priceDto.getPrice() * order.getNumber();
+        }
+        totalFee -= wxUserService.getUserScore(String.valueOf(uid));
         Orders order = new Orders();
         order.setUid(uid);
         order.setAddressId(addressId);
         order.setOrderCode(DateUtil.formatDateTime(new Date()) + new Random().nextInt(10000));
-        order.setRealAmount(new BigDecimal("99"));
+        order.setRealAmount(new BigDecimal(totalFee));
         order.setStatus(0);
         order.setRemark(remark);
         order.setCreateTime(new Date());
@@ -168,7 +197,8 @@ public class OrdersServiceImpl implements OrdersService {
             signData.put("nonce_str", WXPayUtil.generateRandomStr());
             signData.put("body", payParam.getRemark());
             signData.put("out_trade_no", WXPayUtil.generateRandomStr());
-            signData.put("total_fee", payParam.getMoney().multiply(new BigDecimal(100)).toString());
+//            signData.put("total_fee", payParam.getMoney().multiply(new BigDecimal(100)).toString());
+            signData.put("total_fee", "1");
             signData.put("spbill_create_ip", "192.168.2.115");
             signData.put("notify_url", "https://www.weixin.qq.com/wxpay/pay.php");
             signData.put("trade_type", trade_type);

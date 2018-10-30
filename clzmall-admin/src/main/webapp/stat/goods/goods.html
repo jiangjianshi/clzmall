@@ -1,0 +1,36 @@
+<#include "../common/include.html"/>
+<title>banner管理</title>
+<script type="text/javascript" src="${basePath}/stat/goods/goods.js"></script>
+<script type="text/javascript" src="${basePath}/IncJs.a?c=is_valid&c=role_type"></script>
+</head>
+<body class="easyui-layout" data-options="fit:true,border:false">
+	<div id="toolbar" style="display: none;">
+		<form id="searchForm">
+			<table border="0">
+				<tr>
+					<td>
+						<div>
+							<div class="datagrid-btn-separator"></div>
+						</div>
+					</td>
+					<td>商品名称:</td>
+					<td>
+						<input name="name" id="name" class="easyui-textbox" style="width: 110px;" />
+					</td>
+
+					<td colspan="2" style="padding-left:5px;"><a id="btn"
+						href="javascript:opt.search();" class="easyui-linkbutton"
+						<a id="btn"
+						href="javascript:opt.resetSearch();" class="easyui-linkbutton"
+						data-options="iconCls:'icon-redo'" style="margin-left:10px;">重置</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div data-options="region:'center',fit:true,border:false">
+		<table id="dataGrid" data-options="fit:true, border:false"></table>
+	</div>
+
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.clzmall.admin.controller;
 import com.clzmall.admin.service.GoodsService;
 import com.clzmall.common.common.PagedList;
 import com.clzmall.common.common.RespMsg;
+import com.clzmall.common.model.Goods;
 import com.clzmall.common.model.GoodsCategory;
 import com.clzmall.common.model.SysUser;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,4 +39,10 @@ public class GoodsController extends BaseController {
         return success("添加成功", count);
     }
 
+    @RequestMapping(value = "/listGoods")
+    public PagedList<Goods> listGoods(String name) {
+
+        PagedList<Goods> pageList = goodsService.listGoods(name);
+        return pageList;
+    }
 }

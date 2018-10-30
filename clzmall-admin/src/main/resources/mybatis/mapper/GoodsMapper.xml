@@ -67,6 +67,9 @@
         <include refid="columns"/>
         from goods a
         where a.shop_id = #{shopId}
+        <if test="name != null">
+            and a.name like concat('%',concat(#{name},'%'))
+        </if>
     </select>
 
 

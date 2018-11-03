@@ -39,7 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			HttpSession session = req.getSession();
 			SysUser loginUser = (SysUser) session.getAttribute(session.getId());
 			if (loginUser == null) {
-				res.sendRedirect("/index");
+				res.sendRedirect("/");
 				return false;
 			}
 			SysUser dbUser = sysUserMapper.selectByPrimaryKey(loginUser.getId());

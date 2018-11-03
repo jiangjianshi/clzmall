@@ -5,7 +5,7 @@ function logout() {
 		type : 'post',
 		success : function(res) {
 			if(res.code ==0){
-				document.location.href = basePath + "/index";
+				document.location.href = basePath + "/";
 			}
 		},
 		error : function() {

@@ -83,7 +83,7 @@
 			<if test="vo.token != null"> a.token = #{vo.token},</if>
 			<if test="vo.status != null"> a.status = #{vo.status},</if>
 			<if test="vo.loginIp != null"> a.login_ip = #{vo.loginIp},</if>
-			<if test="vo.createTime != null"> a.create_time = #{vo.createTime},</if>
+			<if test="vo.lastLoginTime != null"> a.last_login_time = #{vo.lastLoginTime},</if>
 		</trim>
 		WHERE a.id = #{vo.id}
 	</update>

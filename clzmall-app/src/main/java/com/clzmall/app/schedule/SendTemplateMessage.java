@@ -26,7 +26,8 @@ public class SendTemplateMessage {
     @Resource
     private TemplateMsgService templateMsgService;
 
-//    @Scheduled(fixedRate = 5 * 1000) // 每59分钟执行一次
+//    @Scheduled(fixedRate = 5 * 1000) // 每5秒执行一次
+    @Scheduled(cron = "0 */30 * * * ?") // 每30分钟执行一次
     public void test() throws Exception {
 
         Date ct = DateUtils.addMinutes(new Date(), -3);

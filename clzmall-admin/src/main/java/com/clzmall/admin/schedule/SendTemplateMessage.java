@@ -12,7 +12,7 @@ public class SendTemplateMessage {
 
 
 
-    @Scheduled(cron = "0 */59 * * * ?") // 每59分钟执行一次
+//    @Scheduled(cron = "0 */59 * * * ?") // 每59分钟执行一次
     public void test() throws Exception {
     }
 

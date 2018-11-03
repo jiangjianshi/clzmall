@@ -24,7 +24,7 @@ public class LoginController extends BaseController {
 	@Resource
 	private UserService userService;
 
-	@RequestMapping(path = "/index")
+	@RequestMapping(path = "/")
 	public String index(HttpServletRequest req, HttpServletResponse res) {
 		return "login";
 	}

@@ -56,7 +56,7 @@ var dataGridParams = {
 		width : '15%'
 	} ,  {
 		field : 'loginIp',
-		title : '上传登录IP',
+		title : '登录IP',
 		align : 'left',
 		width : '25%'
 	}] ]

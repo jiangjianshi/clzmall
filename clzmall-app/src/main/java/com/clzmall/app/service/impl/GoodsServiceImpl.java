@@ -2,13 +2,14 @@ package com.clzmall.app.service.impl;
 
 import com.clzmall.app.entity.dto.GoodsDetailDto;
 import com.clzmall.app.entity.dto.GoodsDto;
+import com.clzmall.app.entity.dto.PriceDto;
 import com.clzmall.app.entity.dto.PropertiesDto;
 import com.clzmall.app.mapper.*;
 import com.clzmall.app.service.GoodsService;
 import com.clzmall.common.model.*;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.clzmall.app.entity.dto.PriceDto;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,8 +61,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsDto> listGoods(Integer catId, String name) {
-
-        return goodsMapper.selectByCategoryAndName(catId, name);
+        List<GoodsDto> list = goodsMapper.selectByCategoryAndName(catId, name);
+        list.stream().forEach(x -> {
+            x.setPicUrl(StringUtils.isNotEmpty(x.getPicUrl()) ? x.getPicUrl() + "?x-oss-process=image/resize,h_100" : "");
+        });
+        return list;
     }
 
     @Override

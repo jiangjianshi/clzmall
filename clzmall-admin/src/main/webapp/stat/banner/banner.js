@@ -38,7 +38,10 @@ var dataGridParams = {
         field : 'status',
         title : '状态',
         align : 'left',
-        width : '10%'
+        width : '10%',
+        formatter : function(value, row) {
+            return get_js_codeText('is_valids_js', value);
+        }
     }, {
 		field : 'createTime',
 		title : '新增时间',

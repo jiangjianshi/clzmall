@@ -13,25 +13,33 @@ var dataGridParams = {
         field : 'nickName',
         title : '昵称',
         align : 'left',
-        width : '10%'
+        width : '20%'
     }, {
         field : 'avatarUrl',
         title : '头像',
         align : 'left',
         width : '15%',
         formatter : function(value, row) {
-            return "<img src='"+value+"' style='width:20px; height: 20px;'/>"
+            return "<img src='"+value+"' style='width:24px; height: 24px;'/>"
         }
     },  {
 		field : 'gender',
 		title : '性别',
 		align : 'left',
-		width : '10%'
+		width : '10%',
+        formatter : function(value, row) {
+            return get_js_codeText('genders_js', value);
+        }
 	} ,{
         field : 'mobile',
         title : '绑定手机号',
         align : 'left',
         width : '15%'
+    },{
+        field : 'score',
+        title : '积分',
+        align : 'left',
+        width : '10%'
     } , {
         field : 'province',
         title : '省份',

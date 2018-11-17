@@ -13,12 +13,12 @@ var dataGridParams = {
         field : 'name',
         title : '名称',
         align : 'left',
-        width : '10%'
+        width : '25%'
     }, {
         field : 'storeAmount',
         title : '库存',
         align : 'left',
-        width : '15%'
+        width : '10%'
     },  {
 		field : 'minPrice',
 		title : '最低价格(元)',

@@ -47,7 +47,6 @@ public class UserServiceImpl extends BaseController implements UserService {
 		if (StringUtils.isEmpty(password)) {
 			return fail("密码为空");
 		}
-		String reqIp = req.getRemoteAddr();
 		List<SysUser> userList = sysUserMapper.selectByAccount(account.trim());
 		SysUser user = null;
 		Date lastLoginTime = null;// 保存上次登录时间
@@ -66,7 +65,7 @@ public class UserServiceImpl extends BaseController implements UserService {
 		SysUser loginUser = new SysUser();
 		loginUser.setId(user.getId());
 		loginUser.setToken(token);
-		loginUser.setLoginIp(reqIp);
+		loginUser.setLoginIp(getIpAddr(req));
 		loginUser.setLastLoginTime(new Date());
 		sysUserMapper.updateSelective(loginUser);
 
@@ -76,6 +75,29 @@ public class UserServiceImpl extends BaseController implements UserService {
 		session.setAttribute(session.getId(), loginUser);
 		return success("登录成功", loginUser);
 	}
+
+	/**
+	 * 获取IP
+	 * @param request
+	 * @return
+	 */
+	private String getIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || " unknown ".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		if (ip.equals("0:0:0:0:0:0:0:1")) {
+			ip = "127.0.0.1";
+		}
+		return ip;
+	}
+
 
 	@Override
 	public RrightResultDto getTreeMenus(Integer userId) {

@@ -57,7 +57,7 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Banner> listBanner() {
         List<Banner> list = bannerMapper.selectAll();
         list.stream().forEach(x -> {
-            x.setBackgroundImgUrl(StringUtils.isNotEmpty(x.getBackgroundImgUrl()) ? x.getBackgroundImgUrl() + "?x-oss-process=image/resize,h_500" : "");
+            x.setBackgroundImgUrl(StringUtils.isNotEmpty(x.getBackgroundImgUrl()) ? x.getBackgroundImgUrl().trim() + "?x-oss-process=image/resize,h_500" : "");
         });
         return list;
     }
@@ -67,7 +67,7 @@ public class GoodsServiceImpl implements GoodsService {
     public List<GoodsDto> listGoods(Integer catId, String name) {
         List<GoodsDto> list = goodsMapper.selectByCategoryAndName(catId, name);
         list.stream().forEach(x -> {
-            x.setPicUrl(StringUtils.isNotEmpty(x.getPicUrl()) ? x.getPicUrl() + "?x-oss-process=image/resize,h_240" : "");
+            x.setPicUrl(StringUtils.isNotEmpty(x.getPicUrl()) ? x.getPicUrl().trim() + "?x-oss-process=image/resize,h_240" : "");
         });
         return list;
     }
@@ -100,7 +100,7 @@ public class GoodsServiceImpl implements GoodsService {
         for (GoodsPics pic : pics) {
             if (pic.getIsDefault() == 1) {
                 dto.setPicUrl(pic.getPicUrl());
-                dto.setSmallPicUrl(StringUtils.isNotEmpty(pic.getPicUrl()) ? pic.getPicUrl() + "?x-oss-process=image/resize,h_500" : "");
+                dto.setSmallPicUrl(StringUtils.isNotEmpty(pic.getPicUrl()) ? pic.getPicUrl().trim() + "?x-oss-process=image/resize,h_500" : "");
             }
         }
         detailDto.setBasicInfo(dto);

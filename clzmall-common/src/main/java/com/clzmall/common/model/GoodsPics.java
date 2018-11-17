@@ -15,6 +15,7 @@ public class GoodsPics {
     private Integer id; //
     private Integer goodsId; //
     private String picUrl; //
+    private String smallPicUrl; //
     private Integer isDefault; //是否是默认图片： 1是，0 否
     private Integer status; //状态：1 有效，0 删除
     private Date createTime; //

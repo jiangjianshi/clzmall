@@ -78,7 +78,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         Goods baseInfo = goodsMapper.selectByPrimaryKey(goodsId);
         List<GoodsPics> pics = goodsPicsMapper.selectByGoodsId(goodsId);
-
+        pics.stream().forEach(x -> {
+            x.setSmallPicUrl(StringUtils.isNotEmpty(x.getPicUrl()) ? x.getPicUrl().trim() + "?x-oss-process=image/resize,h_500" : "");
+        });
         List<GoodsProperty> propertiesList = goodsPropertyMapper.selectByGoodsId(goodsId);
         Map<Integer, List<GoodsProperty>> groupMap = propertiesList.stream().collect(groupingBy(GoodsProperty::getPropTypeId));
 
@@ -99,8 +101,7 @@ public class GoodsServiceImpl implements GoodsService {
         BeanUtils.copyProperties(baseInfo, dto);
         for (GoodsPics pic : pics) {
             if (pic.getIsDefault() == 1) {
-                dto.setPicUrl(pic.getPicUrl());
-                dto.setSmallPicUrl(StringUtils.isNotEmpty(pic.getPicUrl()) ? pic.getPicUrl().trim() + "?x-oss-process=image/resize,h_500" : "");
+                dto.setPicUrl(pic.getSmallPicUrl());
             }
         }
         detailDto.setBasicInfo(dto);

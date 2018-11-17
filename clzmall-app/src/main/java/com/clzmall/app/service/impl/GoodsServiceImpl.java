@@ -63,7 +63,7 @@ public class GoodsServiceImpl implements GoodsService {
     public List<GoodsDto> listGoods(Integer catId, String name) {
         List<GoodsDto> list = goodsMapper.selectByCategoryAndName(catId, name);
         list.stream().forEach(x -> {
-            x.setPicUrl(StringUtils.isNotEmpty(x.getPicUrl()) ? x.getPicUrl() + "?x-oss-process=image/resize,h_100" : "");
+            x.setPicUrl(StringUtils.isNotEmpty(x.getPicUrl()) ? x.getPicUrl() + "?x-oss-process=image/resize,h_300" : "");
         });
         return list;
     }

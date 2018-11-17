@@ -13,10 +13,10 @@ public class MakeSql {
 
 
         ImportExcelUtil<FreeInterestRedPacketTaskPO> importExcelUtil = new ImportExcelUtil<>();
-        importExcelUtil.read("/Users/bairong/Desktop/jiaju.xlsx", FreeInterestRedPacketTaskPO.class, 0);
+        importExcelUtil.read("/Users/jiangjianshi/Desktop/美式-FNYJK深色.xlsx", FreeInterestRedPacketTaskPO.class, 0);
         List<FreeInterestRedPacketTaskPO> freeInterestRedPacketTaskPOList = importExcelUtil.getData();
         System.out.println(freeInterestRedPacketTaskPOList.toString());
-        int id =1;
+        int id =463;
 //        for (FreeInterestRedPacketTaskPO po : freeInterestRedPacketTaskPOList) {
 //            if (StringUtils.isEmpty(po.getRemark()))
 //                continue;
@@ -33,14 +33,14 @@ public class MakeSql {
 //        for (FreeInterestRedPacketTaskPO po : freeInterestRedPacketTaskPOList) {
 //            if(StringUtils.isEmpty(po.getRemark()))
 //                continue;
-//            StringBuffer sql = new StringBuffer("insert into goods_properties (goods_id, prop_type_id, prop_value, added_price, added_amount, create_time, update_time) values (");
-//            sql.append("\'").append(id).append("\',")
-//                    .append("\'").append(1).append("\',")
-//                    .append("\'").append(po.getCaizhi()).append("\',")
-//                    .append("\'").append(0).append("\',")
-//                    .append("\'").append(0).append("\',")
-//                    .append("now(),").append("now());");
-//            System.out.println(sql.toString());
+////            StringBuffer sql = new StringBuffer("insert into goods_properties (goods_id, prop_type_id, prop_value, added_price, added_amount, create_time, update_time) values (");
+////            sql.append("\'").append(id).append("\',")
+////                    .append("\'").append(1).append("\',")
+////                    .append("\'").append(po.getCaizhi()).append("\',")
+////                    .append("\'").append(0).append("\',")
+////                    .append("\'").append(0).append("\',")
+////                    .append("now(),").append("now());");
+////            System.out.println(sql.toString());
 //
 //            StringBuffer sql2 = new StringBuffer("insert into goods_properties (goods_id, prop_type_id, prop_value, added_price, added_amount, create_time, update_time) values (");
 //            sql2.append("\'").append(id).append("\',")

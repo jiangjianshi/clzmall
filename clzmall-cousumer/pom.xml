@@ -11,10 +11,7 @@
 
     <groupId>com.clzmall.consumer</groupId>
     <artifactId>clzmall-cousumer</artifactId>
-
     <name>clzmall-cousumer</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,21 +50,10 @@
     </dependencies>
 
     <build>
-        <finalName>lemon-web</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.br.lemon.ApplicationClient</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

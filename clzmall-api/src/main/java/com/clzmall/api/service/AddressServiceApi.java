@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "clzmall-app", fallbackFactory = AddressServiceFallbackFactory.class)
 public interface AddressServiceApi {
 
-    @RequestMapping(value = "/dept/get/{id}", method = RequestMethod.GET)
-    RespMsg get(@PathVariable("id") Integer id);
+    @RequestMapping(value = "address/listAddress/{uid}", method = RequestMethod.GET)
+    RespMsg get(@PathVariable("uid") Integer uid);
 }

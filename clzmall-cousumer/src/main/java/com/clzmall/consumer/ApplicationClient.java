@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 //@RibbonClient(name="clzmall-app")
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients(basePackages= {"com.clzmall.consumer"})
-@ComponentScan("com.clzmall.consumer")
+@EnableFeignClients(basePackages= {"com.clzmall"})
+@ComponentScan("com.clzmall")
 public class ApplicationClient {
 
     public static void main(String[] args) {

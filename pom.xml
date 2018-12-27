@@ -22,6 +22,7 @@
         <module>clzmall-admin</module>
         <module>clzmall-register</module>
         <module>clzmall-cousumer</module>
+        <module>clzmall-api</module>
     </modules>
 
     <parent>

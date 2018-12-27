@@ -5,6 +5,8 @@ import com.clzmall.common.common.RespMsg;
 import com.clzmall.common.model.Address;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +33,8 @@ public class AddressController extends BaseController {
     }
 
 
-    @RequestMapping("listAddress")
-    public RespMsg<List<Address>> listAddress(Integer uid) {
+    @GetMapping("listAddress/{uid}")
+    public RespMsg<List<Address>> listAddress(@PathVariable("uid") Integer uid) {
         try {
             List<Address> list = addressService.getAddressList(uid);
             return success("获取成功", list);

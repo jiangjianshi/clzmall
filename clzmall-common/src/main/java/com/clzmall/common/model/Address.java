@@ -3,6 +3,7 @@ package com.clzmall.common.model;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Data
 @ToString
-public class Address {
+public class Address implements Serializable{
 
     private Integer id; //
     private Integer uid; //用户ID

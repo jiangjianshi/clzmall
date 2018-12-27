@@ -9,9 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * Created by jiangjianshi on 18/12/6.
  */
+//@RibbonClient(name="clzmall-app")
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients(basePackages = {"com.clzmall.consumer"})
+@EnableFeignClients(basePackages= {"com.clzmall.consumer"})
 @ComponentScan("com.clzmall.consumer")
 public class ApplicationClient {
 

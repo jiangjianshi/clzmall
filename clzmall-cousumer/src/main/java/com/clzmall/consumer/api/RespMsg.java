@@ -1,7 +1,4 @@
-package com.clzmall.common.common;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+package com.clzmall.consumer.api;
 
 import java.io.Serializable;
 
@@ -40,10 +37,5 @@ public class RespMsg<T> implements Serializable{
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-
-        return JSON.toJSONString(this, SerializerFeature.WriteMapNullValue);
-    }
 
 }

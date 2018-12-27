@@ -12,7 +12,7 @@ public class AddressServiceFallbackFactory implements FallbackFactory<AddressSer
         return new AddressServiceApi(){
 
             @Override
-            public RespMsg get(long id) {
+            public RespMsg get(Integer id) {
                 RespMsg respMsg = new RespMsg();
                 respMsg.setCode(1);
                 respMsg.setMsg("hystrix");

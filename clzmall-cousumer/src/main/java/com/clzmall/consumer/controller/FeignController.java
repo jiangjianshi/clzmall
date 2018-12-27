@@ -1,7 +1,7 @@
 package com.clzmall.consumer.controller;
 
+import com.clzmall.api.entity.RespMsg;
 import com.clzmall.api.service.AddressServiceApi;
-import com.clzmall.consumer.api.RespMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,6 +16,6 @@ public class FeignController {
     @GetMapping(value = "/consumer/address/listAddress")
     public RespMsg listAddress(Integer uid) {
 
-
+        return addressServiceApi.get(uid);
     }
 }

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Created by bairong on 2018/12/27.
  */
-@FeignClient(value = "clzmall-app",fallbackFactory=AddressServiceFallbackFactory.class)
+@FeignClient(value = "clzmall-app", fallbackFactory = AddressServiceFallbackFactory.class)
 public interface AddressServiceApi {
 
     @RequestMapping(value = "/dept/get/{id}", method = RequestMethod.GET)
-    public RespMsg get(@PathVariable("id") long id);
+    RespMsg get(@PathVariable("id") Integer id);
 }

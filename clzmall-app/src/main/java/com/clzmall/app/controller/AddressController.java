@@ -36,8 +36,8 @@ public class AddressController extends BaseController {
     @GetMapping("listAddress/{uid}")
     public RespMsg<List<Address>> listAddress(@PathVariable("uid") Integer uid) {
         try {
-            List<Address> list = addressService.getAddressList(uid);
-            return success("获取成功", list);
+//            List<Address> list = addressService.getAddressList(uid);
+            return success("获取成功");
         } catch (Exception e) {
             e.printStackTrace();
             return fail("获取失败");

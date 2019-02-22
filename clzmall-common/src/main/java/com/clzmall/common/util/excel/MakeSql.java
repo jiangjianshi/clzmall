@@ -1,7 +1,13 @@
 package com.clzmall.common.util.excel;
 
-import org.apache.commons.lang3.StringUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.clzmall.common.util.HttpUtil;
+import com.google.common.collect.Lists;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,57 +19,54 @@ public class MakeSql {
 
 
         ImportExcelUtil<FreeInterestRedPacketTaskPO> importExcelUtil = new ImportExcelUtil<>();
-        importExcelUtil.read("/Users/jiangjianshi/Desktop/美式-FNYJK深色.xlsx", FreeInterestRedPacketTaskPO.class, 0);
+        importExcelUtil.read("/Users/bairong/Desktop/user_record_2019-02-21.xls", FreeInterestRedPacketTaskPO.class, 0);
         List<FreeInterestRedPacketTaskPO> freeInterestRedPacketTaskPOList = importExcelUtil.getData();
-        System.out.println(freeInterestRedPacketTaskPOList.toString());
-        int id =463;
-//        for (FreeInterestRedPacketTaskPO po : freeInterestRedPacketTaskPOList) {
-//            if (StringUtils.isEmpty(po.getRemark()))
-//                continue;
-//            StringBuffer sql = new StringBuffer("insert into goods (id, name, min_price, status, create_time, update_time) values (");
-//            sql.append("\'").append(id).append("\',")
-//                    .append("\'").append(po.getName()).append("\',")
-//                    .append("\'").append(po.getPrice()).append("\',")
-//                    .append("\'").append(1).append("\',")
-//                    .append("now(),").append("now());");
-//            System.out.println(sql.toString());
-//            id++;
-//        }
 
-//        for (FreeInterestRedPacketTaskPO po : freeInterestRedPacketTaskPOList) {
-//            if(StringUtils.isEmpty(po.getRemark()))
-//                continue;
-////            StringBuffer sql = new StringBuffer("insert into goods_properties (goods_id, prop_type_id, prop_value, added_price, added_amount, create_time, update_time) values (");
-////            sql.append("\'").append(id).append("\',")
-////                    .append("\'").append(1).append("\',")
-////                    .append("\'").append(po.getCaizhi()).append("\',")
-////                    .append("\'").append(0).append("\',")
-////                    .append("\'").append(0).append("\',")
-////                    .append("now(),").append("now());");
-////            System.out.println(sql.toString());
-//
-//            StringBuffer sql2 = new StringBuffer("insert into goods_properties (goods_id, prop_type_id, prop_value, added_price, added_amount, create_time, update_time) values (");
-//            sql2.append("\'").append(id).append("\',")
-//                    .append("\'").append(2).append("\',")
-//                    .append("\'").append(po.getSize()).append("\',")
-//                    .append("\'").append(0).append("\',")
-//                    .append("\'").append(0).append("\',")
-//                    .append("now(),").append("now());");
-//            System.out.println(sql2.toString());
-//            id++;
-//        }
+        List lines = Lists.newArrayList();
+        for (FreeInterestRedPacketTaskPO row : freeInterestRedPacketTaskPOList) {
+            String uid = row.getUserCode().split("-")[1];
+            String clickProduct = row.getClickProductName();
 
-        for (FreeInterestRedPacketTaskPO po : freeInterestRedPacketTaskPOList) {
-            if(StringUtils.isEmpty(po.getRemark()))
-                continue;
-            StringBuffer sql = new StringBuffer("insert into goods_pics (goods_id, pic_url, is_default, status, create_time, update_time) values (");
-            sql.append("\'").append(id).append("\',")
-                    .append("\'").append(po.getRemark()).append("\',")
-                    .append("\'").append(1).append("\',")
-                    .append("\'").append(1).append("\',")
-                    .append("now(),").append("now());");
-            System.out.println(sql.toString());
-            id++;
+            String url = "https://openapi.rongshu.cn/hermes/v3/index/listTopicProduct.do?mobileType=1&optionKey=1&pageNum=1&pageSize=10&pageType=8&orderKey=1&uid=" + uid;
+            boolean containFlag = false;
+            try {
+                String json = HttpUtil.get(url);
+//                System.out.println(json);
+                JSONObject obj = JSONObject.parseObject(json);
+                JSONArray array = obj.getJSONArray("productList");
+//                System.out.println(JSON.toJSON(array));
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject jsonObject = (JSONObject) array.get(i);
+                    String pName = jsonObject.getString("name");
+                    if (clickProduct.equals(pName)) {
+                        containFlag = true;
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String result = "";
+            if (containFlag) {
+                result = "uid=" + uid + " result=" + containFlag;
+            } else {
+                result = "uid=" + uid + " result=" + containFlag+".........";
+            }
+            lines.add(result);
+
+        }
+        try {
+            FileUtils.writeLines(new File("/Users/bairong/Desktop/check_result.txt"), lines, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
+
+
 }

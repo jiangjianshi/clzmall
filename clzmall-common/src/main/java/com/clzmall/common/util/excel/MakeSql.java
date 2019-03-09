@@ -26,8 +26,7 @@ public class MakeSql {
         for (FreeInterestRedPacketTaskPO row : freeInterestRedPacketTaskPOList) {
             String uid = row.getUserCode().split("-")[1];
             String clickProduct = row.getClickProductName();
-
-            String url = "https://openapi.rongshu.cn/hermes/v3/index/listTopicProduct.do?mobileType=1&optionKey=1&pageNum=1&pageSize=10&pageType=8&orderKey=1&uid=" + uid;
+            String url = "";
             boolean containFlag = false;
             try {
                 String json = HttpUtil.get(url);

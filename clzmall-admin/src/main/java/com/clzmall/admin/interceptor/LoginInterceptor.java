@@ -17,57 +17,56 @@ import java.util.List;
 
 /**
  * 登录拦截器
- * 
- * @author jjs
  *
+ * @author jjs
  */
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
-	@Override
-	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
+    @Override
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 
-		if (handler instanceof HandlerMethod) {
-			String uri = req.getRequestURI();
-			List<String> exculdeList = Arrays.asList("/", "/error", "/index", "/login","/logout", "/IncJs.a");// 无需校验的URI
-			if (exculdeList.contains(uri)) {
-				return true;
-			}
-			HttpSession session = req.getSession();
-			SysUser loginUser = (SysUser) session.getAttribute(session.getId());
-			if (loginUser == null) {
-				res.sendRedirect("/");
-				return false;
-			}
-			SysUser dbUser = sysUserMapper.selectByPrimaryKey(loginUser.getId());
-			if (loginUser.getToken().equals(dbUser.getToken())) {
-				return true;
-			} else {
-				res.setCharacterEncoding("UTF-8");
-				res.setContentType("text/html; charset=utf-8");
-				PrintWriter writer = res.getWriter();
-				session.invalidate();
-				writer.write("<center>登录token已过期，请重新登录.</center>");
-				return false;
-			}
-		} else {
-			return true;
-		}
-//		return  true;
-	}
+//		if (handler instanceof HandlerMethod) {
+//			String uri = req.getRequestURI();
+//			List<String> exculdeList = Arrays.asList("/", "/error", "/index", "/login","/logout", "/IncJs.a");// 无需校验的URI
+//			if (exculdeList.contains(uri)) {
+//				return true;
+//			}
+//			HttpSession session = req.getSession();
+//			SysUser loginUser = (SysUser) session.getAttribute(session.getId());
+//			if (loginUser == null) {
+//				res.sendRedirect("/");
+//				return false;
+//			}
+//			SysUser dbUser = sysUserMapper.selectByPrimaryKey(loginUser.getId());
+//			if (loginUser.getToken().equals(dbUser.getToken())) {
+//				return true;
+//			} else {
+//				res.setCharacterEncoding("UTF-8");
+//				res.setContentType("text/html; charset=utf-8");
+//				PrintWriter writer = res.getWriter();
+//				session.invalidate();
+//				writer.write("<center>登录token已过期，请重新登录.</center>");
+//				return false;
+//			}
+//		} else {
+//			return true;
+//		}
+        return true;
+    }
 
-	@Override
-	public void postHandle(HttpServletRequest req, HttpServletResponse res, Object obj, ModelAndView mv)
-			throws Exception {
+    @Override
+    public void postHandle(HttpServletRequest req, HttpServletResponse res, Object obj, ModelAndView mv)
+            throws Exception {
 
-	}
+    }
 
-	@Override
-	public void afterCompletion(HttpServletRequest req, HttpServletResponse res, Object obj, Exception ex)
-			throws Exception {
+    @Override
+    public void afterCompletion(HttpServletRequest req, HttpServletResponse res, Object obj, Exception ex)
+            throws Exception {
 
-	}
+    }
 }
